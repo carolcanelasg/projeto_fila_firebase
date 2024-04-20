@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <title>Pacientes</title>
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="manifest" href="../manifest.json" />
+  </head>
+  <body>
+    <header>Cadastro de Pacientes</header>
+    <main>
+      <div>
+        <label for="tfCpf">CPF:</label
+        ><input type="text" id="tfCpf" disabled="true" />
+      </div>
+      <div>
+        <label for="tfNome">Nome:</label
+        ><input type="text" id="tfNome" disabled="true" />
+      </div>
+      <div>
+        <label for="tfEmail">e-Mail:</label
+        ><input type="text" id="tfEmail" disabled="true" />
+      </div>
+      <div>
+        <label for="tfTelefone">Telefone:</label
+        ><input type="text" id="tfTelefone" disabled="true" />
+      </div>
+        <div id="divComandos">
+          <button id="btIncluir">Incluir</button>
+          <button id="btAlterar">Alterar</button>
+          <button id="btExcluir">Excluir</button>
+          <button id="btSair" onclick="window.location.href = './init.html'">Sair</button>
+        </div>
+        <div id="divAviso"></div>
+        <div id="divDialogo" hidden>
+          <button id="btOk">Ok</button>
+          <button id="btCancelar">Cancelar</button>
+        </div>
+      </nav>
+    </main>
+  </body>
+  <script type="module" src="/controller/CtrlSessao.js"></script>
+</html>

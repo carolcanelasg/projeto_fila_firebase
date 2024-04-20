@@ -1,0 +1,87 @@
+/* Our default values set as CSS variables */
+:root {
+  --color-bg: #6e6cdd;
+  --color-text-main: #000000;
+  --color-primary: #ffff00;
+  --wrapper-height: 87vh;
+  --image-max-width: 300px;
+  --image-margin: 3rem;
+  --font-family: "HKGrotesk";
+  --font-family-header: "HKGrotesk";
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: var(--color-bg);
+}
+
+header {
+  color: #000000;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 105%;
+  margin: 12px 0 12px 0;
+  border-bottom: 4px solid #fff;
+  text-align: center;
+}
+
+main div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+  margin: 12px 0 0 0;
+}
+
+main div * {
+  margin: 0 6px 0 6px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+button {
+  font-family: sans-serif;
+  padding: 12px 12px;
+  font-size: 14px;
+  line-height: 1px;
+  height: 20px;
+  align-items: center;
+  cursor: pointer;
+  background: #ffffff;
+  border: 1px solid #111010;
+  box-sizing: border-box;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  color: #924be4;
+  border-radius: 10px;
+}
+
+button:hover {
+  background: #924be4;
+  color: #ffffff;
+}
+
+button:disabled,
+button[disabled] {
+  border: 1px solid #080808;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+div {
+  margin: 12px 0 12px 0;
+}
+
+fieldset {
+  border: 2px solid #000000;
+  border-radius: 10px 20px;
+  background-color: antiquewhite;
+}

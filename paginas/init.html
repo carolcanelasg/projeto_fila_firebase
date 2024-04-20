@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <title>Primeiro Exemplo com o uso de JavaScript</title>
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="manifest" href="../manifest.json" />
+  </head>
+  <body>
+    <header>Controle de Fila de Hospital</header>
+    <main>
+      <nav>
+        <div id="divNavegar">
+          <fieldset>
+            <button
+              id="btPaciente"
+              onclick="window.location.href = './pacientes.html'"
+            >
+              Pacientes
+            </button>
+            <button
+              id="btHospital"
+              onclick="window.location.href = './hospitais.html'"
+            >
+              Hospital
+            </button>
+            <button id="btFila" onclick="window.location.href = './fila.html'">
+              Fila
+            </button>
+
+            <button
+              id="btReserva"
+              onclick="window.location.href = './reserva.html'"
+            >
+              Reserva
+            </button>
+            <button
+              id="btServico"
+              onclick="window.location.href = './servico.html'"
+            >
+              Serviço
+            </button>
+          </fieldset>
+        </div>
+
+        <div id="divComandos"></div>
+        <div id="divAviso"></div>
+      </nav>
+    </main>
+  </body>
+</html>

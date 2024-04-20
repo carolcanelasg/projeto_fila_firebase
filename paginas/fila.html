@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Fila</title>
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="manifest" href="../manifest.json" />
+  </head>
+  <body>
+    <header>Cadastro de Filas</header>
+    <main>
+      <div>
+        <label for="tfTipoFila">Tipo de Fila:</label
+        ><input type="text" id="tfTipoFila" disabled="true" />
+      </div>
+      <div>
+        <label for="tfIdFila">Id Fila:</label
+        ><input type="text" id="tfIdFila" disabled="true" />
+      </div>
+      <div>
+        <label for="tfTempoMedio">Tempo Médio:</label
+        ><input type="text" id="tfTipoFila" disabled="true" />
+      </div>
+      <nav>
+        <div id="divNavegar">
+          <button id="btPrimeiro">Primeiro</button>
+          <button id="btAnterior">Anterior</button>
+          <button id="btProximo">Próximo</button>
+          <button id="btUltimo">Último</button>
+        </div>
+        <div id="divComandos">
+          <button id="btIncluir">Incluir</button>
+          <button id="btAlterar">Alterar</button>
+          <button id="btExcluir">Excluir</button>
+          <button id="btSair" onclick="window.location.href = './init.html'">
+            Sair
+          </button>
+        </div>
+        <div id="divAviso"></div>
+        <div id="divDialogo" hidden>
+          <button id="btOk">Ok</button>
+          <button id="btCancelar">Cancelar</button>
+        </div>
+      </nav>
+    </main>
+  </body>
+  <script type="module" src="/controller/CtrlSessao.js"></script>
+</html>

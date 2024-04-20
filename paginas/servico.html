@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <title>Serviço</title>
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="manifest" href="../manifest.json" />
+  </head>
+  <body>
+    <header>Cadastro de Serviços</header>
+    <main>
+      <div>
+        <label for="tfNomeServico">Nome do Serviço:</label
+        ><input type="text" id="tfNomeServico" disabled="true" />
+      </div>
+      <div>
+        <label for="tfQntAtend">Quantidade de Atendimento:</label
+        ><input type="text" id="tfQntAtend" disabled="true" />
+      </div>
+      <div>
+        <label for="tfIdServ">Id Serviço:</label
+        ><input type="text" id="tfIdServ" disabled="true" />
+      </div>
+      <nav>
+        <div id="divNavegar">
+          <button id="btPrimeiro">Primeiro</button>
+          <button id="btAnterior">Anterior</button>
+          <button id="btProximo">Próximo</button>
+          <button id="btUltimo">Último</button>
+        </div>
+        <div id="divComandos">
+          <button id="btIncluir">Incluir</button>
+          <button id="btAlterar">Alterar</button>
+          <button id="btExcluir">Excluir</button>
+          <button id="btSair" onclick="window.location.href = './init.html'">
+            Sair
+          </button>
+        </div>
+        <div id="divAviso"></div>
+        <div id="divDialogo" hidden>
+          <button id="btOk">Ok</button>
+          <button id="btCancelar">Cancelar</button>
+        </div>
+      </nav>
+    </main>
+  </body>
+  <script type="module" src="/controller/CtrlSessao.js"></script>
+</html>
