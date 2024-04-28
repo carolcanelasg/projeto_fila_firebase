@@ -1,12 +1,12 @@
 {
   "rules": {
     "usuarios": {
-			".indexOn": ["email"],
-			"$uid": {
-			".read": "$uid === auth.uid || auth.token.isAdmin == true",
-			".write": "auth.token.isAdmin == true "
-			}
-		},
+	".indexOn": ["email"],
+	"$uid": {
+	".read": "$uid === auth.uid || auth.token.isAdmin == true",
+	".write": "auth.token.isAdmin == true "
+	}
+    },
     "pacientes": {
       ".indexOn": ["cpf"],
     	".read": "root.child('usuarios').child(auth.uid).exists() === true",
