@@ -1,0 +1,32 @@
+{
+  "rules": {
+    "usuarios": {
+			".indexOn": ["email"],
+			"$uid": {
+			".read": "$uid === auth.uid || auth.token.isAdmin == true",
+			".write": "auth.token.isAdmin == true "
+			}
+		},
+    "pacientes": {
+      ".indexOn": ["cpf"],
+    	".read": "root.child('usuarios').child(auth.uid).exists() === true",
+			".write": "root.child('usuarios').child(auth.uid).exists() === true",
+    },
+    "hospitais": {
+      ".read": "auth != null",
+      ".write": "auth != null && root.child('usuarios').child(auth.uid).child('tipo').val() === 'administrador'"
+    },
+    "servicos": {
+      ".read": "auth != null",
+      ".write": "auth != null && root.child('usuarios').child(auth.uid).child('tipo').val() === 'administrador'"
+    },
+    "tipos_de_fila": {
+      ".read": "auth != null",
+      ".write": "auth != null && root.child('usuarios').child(auth.uid).child('tipo').val() === 'administrador'"
+    },
+    "reservas": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
+  }
+}
