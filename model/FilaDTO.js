@@ -1,25 +1,19 @@
 import ModelError from "/model/ModelError.js";
-import Reserva from "/model/Reserva.js";
+import Fila from "/model/Fila.js";
 
-export default class ReservaDTO {
+export default class FilaDTO {
     
   //-----------------------------------------------------------------------------------------//
 
   // Atributos privados 
-  #nome_paciente;
   #tipo_fila;
-  #data;
+  #id_fila;
+  #tempo_medio;  
   
-  constructor(reserva) {
-    this.#nome_paciente = reserva.getNome();
-    this.#tipo_fila = reserva.getTipoFila();
-    this.#data = reserva.getData();           
-  }
-  
-  //-----------------------------------------------------------------------------------------//
-
-  getNomePaciente() {
-    return this.#nome_paciente;
+  constructor(fila) {
+    this.#tipo_fila = fila.getTipoFila();
+    this.#id_fila = fila.getIdFila();
+    this.#tempo_medio = fila.getTempoMedio();         
   }
   
   //-----------------------------------------------------------------------------------------//
@@ -30,18 +24,25 @@ export default class ReservaDTO {
   
   //-----------------------------------------------------------------------------------------//
 
-  getData() {
-    return this.#data;
+  getIdFila() {
+    return this.#id_fila;
   }
-    
+  
+  //-----------------------------------------------------------------------------------------//
+
+  getTempoMedio() {
+    return this.#tempo_medio;
+  }
+  
   //-----------------------------------------------------------------------------------------//
    
   mostrar() {
-    let texto = "Nome do Paciente: " + this.#nome_paciente + "\n";
-    texto += "Tipo de Fila: " + this.#tipo_fila + "\n";
-    texto += "Data: " + this.#data +"\n";
+    let texto = "Tipo de Fila: " + this.#tipo_fila + "\n";
+    texto += "Tempo Médio: " + this.#tempo_medio + "\n";
+    texto += "ID da Fila: " + this.#id_fila +"\n";
       
     alert(texto);
     alert(JSON.stringify(this));
-    }
+  }
 }
+
