@@ -1,69 +1,71 @@
 "use strict";
 
+import Fila from "../model/fila/Fila";
 
-export default class CtrlReserva {
+
+
+export default class CtrlFila {
   
   //-----------------------------------------------------------------------------------------//
 
   //
   // Atributos do Controlador
   //
-  #daoReserva;      // Referência para o Data Access Object para o Store de Alunos
-  #daoFila; // Referência para o Data Access Object para o Store de Cursos
-  #viewer;   // Referência para o gerenciador do viewer 
-  #posAtual; // Indica a posição do objeto Aluno que estiver sendo apresentado
+  #daoFila;      // Referência para o Data Access Object para o Store de pacientes
+  #daoReserva; // Referência para o Data Access Object para o Store de Cursos
+  #viewerFila;   // Referência para o gerenciador do viewerFila 
+  #posAtual; // Indica a posição do objeto paciente que estiver sendo apresentado
   #status;   // Indica o que o controlador está fazendo 
   
   //-----------------------------------------------------------------------------------------//
 
   constructor() {
-    this.#daoReserva = new daoReserva();
-    this.#daoFila = new daoFila();
-    this.#viewer = new ViewerAluno(this);
+    this.#daoFila = new DaoFila();
+    this.#viewerFila = new viewerFila(this);
     this.#posAtual = 1;
     this.#atualizarContextoNavegacao();    
   }
   
   //-----------------------------------------------------------------------------------------//
 
-  /*async obterCursosDTOs() {
-    return await this.#daoFila.obterCursos(true);
-  }*/
+  async obterReservaDTOs() {
+    return await this.#daoReserva.obterReservas(true);
+  }
   
   //-----------------------------------------------------------------------------------------//
 
-  async #atualizarContextoNavegacao() {
+  async #atualizarContextoNavegacao() { //////////////////////////////////
     // Guardo a informação que o controlador está navegando pelos dados
     this.#status = Status.NAVEGANDO;
 
-    // Determina ao viewer que ele está apresentando dos dados 
-    this.#viewer.statusApresentacao();
+    // Determina ao viewerFila que ele está apresentando dos dados 
+    this.#viewerFila.statusApresentacao();
     
-    // Solicita ao DAO que dê a lista de todos os alunos presentes na base
-    let conjReservas = await this.#daoReserva.obterReservas();
+    // Solicita ao DAO que dê a lista de todos os pacientes presentes na base
+    let conjFila = await this.#daoFila.obterFilas();
     
-    // Se a lista de alunos estiver vazia
-    if(conjReservas.length == 0) {
+    // Se a lista de pacientes estiver vazia
+    if(conjFila.length == 0) {
       // Posição Atual igual a zero indica que não há objetos na base
       this.#posAtual = 0;
       
-      // Informo ao viewer que não deve apresentar nada
-      this.#viewer.apresentar(0, 0, null);
+      // Informo ao viewerFila que não deve apresentar nada
+      this.#viewerFila.apresentar(0, 0, null);
     }
     else {
       // Se é necessário ajustar a posição atual, determino que ela passa a ser 1
-      if(this.#posAtual == 0 || this.#posAtual > conjReservas.length)
+      if(this.#posAtual == 0 || this.#posAtual > conjFila.length)
         this.#posAtual = 1;
-      // Peço ao viewer que apresente o objeto da posição atual
-      this.#viewer.apresentar(this.#posAtual, conjReservas.length, new ReservaDTO(conjReservas[this.#posAtual - 1]));
+      // Peço ao viewerFila que apresente o objeto da posição atual
+      this.#viewerFila.apresentar(this.#posAtual, conjFila.length, new filaDTO(conjFila[this.#posAtual - 1]));
     }
   }
   
   //-----------------------------------------------------------------------------------------//
 
   async apresentarPrimeiro() {
-    let conjReservas = await this.#daoReserva.obterReservas();
-    if(conjReservas.length > 0)
+    let conjFila = await this.#daoFila.obterFilas(); ///////////////////////////
+    if(conjFila.length > 0)
       this.#posAtual = 1;
     this.#atualizarContextoNavegacao();
   }
@@ -71,8 +73,8 @@ export default class CtrlReserva {
   //-----------------------------------------------------------------------------------------//
 
   async apresentarProximo() {
-    let conjReservas = await this.#daoReserva.obterReservas();
-    if(this.#posAtual < conjReservas.length)
+    let conjFila = await this.#daoFila.obterFilas(); ////////////////////////
+    if(this.#posAtual < conjFila.length)
       this.#posAtual++;
     this.#atualizarContextoNavegacao();
   }
@@ -80,7 +82,7 @@ export default class CtrlReserva {
   //-----------------------------------------------------------------------------------------//
 
   async apresentarAnterior() {
-    let conjReservas = await this.#daoReserva.obterReservas();
+    let conjFila = await this.#daoFila.obterFilas();  ////////////////////////
     if(this.#posAtual > 1)
       this.#posAtual--;
     this.#atualizarContextoNavegacao();
@@ -89,8 +91,8 @@ export default class CtrlReserva {
   //-----------------------------------------------------------------------------------------//
 
   async apresentarUltimo() {
-    let conjReservas = await this.#daoReserva.obterReservas();
-    this.#posAtual = conjReservas.length;
+    let conjFila = await this.#daoFila.obterFilas();  ////////////////////////
+    this.#posAtual = conjFila.length;
     this.#atualizarContextoNavegacao();
   }
 
@@ -98,9 +100,9 @@ export default class CtrlReserva {
   
   iniciarIncluir() {
     this.#status = Status.INCLUINDO;
-    this.#viewer.statusEdicao(Status.INCLUINDO);
+    this.#viewerFila.statusEdicao(Status.INCLUINDO);
     // Guardo a informação que o método de efetivação da operação é o método incluir (ou seja,
-    // a CALLBACK da ação é o método incluir. Preciso disso, pois o viewer mandará a mensagem
+    // a CALLBACK da ação é o método incluir. Preciso disso, pois o viewerFila mandará a mensagem
     // "efetivar" (polimórfica) ao invés de "incluir"
     this.efetivar = this.incluir;
   }
@@ -109,9 +111,9 @@ export default class CtrlReserva {
   
   iniciarAlterar() {
     this.#status = Status.ALTERANDO;
-    this.#viewer.statusEdicao(Status.ALTERANDO);
+    this.#viewerFila.statusEdicao(Status.ALTERANDO);
     // Guardo a informação que o método de efetivação da operação é o método alterar (ou seja,
-    // a CALLBACK da ação é o método alterar. Preciso disso, pois o viewer mandará a mensagem
+    // a CALLBACK da ação é o método alterar. Preciso disso, pois o viewerFila mandará a mensagem
     // "efetivar" (polimórfica) ao invés de "alterar"
     this.efetivar = this.alterar;
   }
@@ -120,21 +122,20 @@ export default class CtrlReserva {
   
   iniciarExcluir() {
     this.#status = Status.EXCLUINDO;
-    this.#viewer.statusEdicao(Status.EXCLUINDO);
+    this.#viewerFila.statusEdicao(Status.EXCLUINDO);
     // Guardo a informação que o método de efetivação da operação é o método excluir (ou seja,
-    // a CALLBACK da ação é o método excluir. Preciso disso, pois o viewer mandará a mensagem
+    // a CALLBACK da ação é o método excluir. Preciso disso, pois o viewerFila mandará a mensagem
     // "efetivar" (polimórfica) ao invés de "excluir"
     this.efetivar = this.excluir;
   }
 
   //-----------------------------------------------------------------------------------------//
  
-  async incluir(nome_paciente, tipo_fila, data) {
+  async incluir(ntipo_fila, id_fila, tempo_medio) {
     if(this.#status == Status.INCLUINDO) {
       try {
-        let fila = await this.#daoFila.obterFilaPeloId(tipo_fila);
-        let reserva = new reserva(nome_paciente, tipo_fila, data);
-        await this.#daoReserva.incluir(reserva); 
+        let fila = new Fila(ntipo_fila, id_fila, tempo_medio);
+        await this.#daoFila.incluir(fila); 
         this.#status = Status.NAVEGANDO;
         this.#atualizarContextoNavegacao();
       }
@@ -146,18 +147,17 @@ export default class CtrlReserva {
 
   //-----------------------------------------------------------------------------------------//
  
-  async alterar(nome_paciente, tipo_fila, data) {
+  async alterar(ntipo_fila, id_fila, tempo_medio) {
     if(this.#status == Status.ALTERANDO) {
       try {
-        let fila = await this.#daoFila.obterFilaPeloId(tipo_fila);
-        let reserva = await this.#daoReserva.obterReservaPelaData(data); 
-        if(reserva == null) {
-          alert("reserva com a data " + data + " não encontrada.");
+        let fila = await this.#daoFila.obterFilaPeloId(id_fila); 
+        if(fila == null) {
+          alert("fila com o id_fila " + id_fila + " não encontrada.");
         } else {
-          reserva.setNomePaciente(nome_paciente);
-          reserva.setTipoFila(tipo_fila);
-          reserva.setData(data);
-          await this.#daoReserva.alterar(reserva); 
+          fila.setTipoFila(ntipo_fila);
+          fila.setIdFila(id_fila)
+          fila.setTempoMedio(tempo_medio);
+          await this.#daoFila.alterar(fila); 
         }
         this.#status = Status.NAVEGANDO;
         this.#atualizarContextoNavegacao();
@@ -170,14 +170,14 @@ export default class CtrlReserva {
 
   //-----------------------------------------------------------------------------------------//
  
-  async excluir(data_reserva) {
+  async excluir(id_fila) {
     if(this.#status == Status.EXCLUINDO) {
       try {
-        let reserva = await this.#daoReserva.obterReservaPelaData(data_reserva); 
-        if(reserva == null) {
-          alert("reserva com a data_reserva" + data_reserva + " não encontrado.");
+        let fila = await this.#daoFila.obterFilaPeloId(id_fila); 
+        if(fila == null) {
+          alert("fila com a id_fila " + id_fila + " não encontrado.");
         } else {
-          await this.#daoReserva.excluir(reserva); 
+          await this.#daoFila.excluir(fila); 
         }
         this.#status = Status.NAVEGANDO;
         this.#atualizarContextoNavegacao();
