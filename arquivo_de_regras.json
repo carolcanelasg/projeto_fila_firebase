@@ -9,24 +9,27 @@
 		},
     "pacientes": {
       ".indexOn": ["cpf"],
-    	".read": "root.child('usuarios').child(auth.uid).exists() === true",
-			".write": "root.child('usuarios').child(auth.uid).exists() === true",
+    	".read": "root.child('usuarios').child(auth.uid).exists() === true && $uid === auth.uid",
+			".write": "root.child('usuarios').child(auth.uid).exists() === true"
     },
     "hospitais": {
-      ".read": "auth != null",
+      ".indexOn": ["id"],
+      ".read": "root.child('usuarios').child(auth.uid).exists() === true",
       ".write": "auth != null && root.child('usuarios').child(auth.uid).child('tipo').val() === 'administrador'"
     },
     "servicos": {
-      ".read": "auth != null",
+      ".indexOn": ["id"],
+      ".read": "root.child('usuarios').child(auth.uid).exists() === true",
       ".write": "auth != null && root.child('usuarios').child(auth.uid).child('tipo').val() === 'administrador'"
     },
     "tipos_de_fila": {
+      ".indexOn": ["id"],
       ".read": "auth != null",
       ".write": "auth != null && root.child('usuarios').child(auth.uid).child('tipo').val() === 'administrador'"
     },
     "reservas": {
-      ".read": "auth != null",
-      ".write": "auth != null"
+      ".read": "root.child('usuarios').child(auth.uid).exists() === true && $uid === auth.uid",
+      ".write": "root.child('usuarios').child(auth.uid).exists() === true" 
     }
   }
 }
