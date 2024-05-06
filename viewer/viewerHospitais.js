@@ -123,55 +123,41 @@ export default class ViewerHospital {
 //------------------------------------------------------------------------//
 
 function fnBtPrimeiro() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().apresentarPrimeiro();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtProximo() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().apresentarProximo();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtAnterior() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().apresentarAnterior();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtUltimo() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().apresentarUltimo();
 }
 //------------------------------------------------------------------------//
 
 function fnBtIncluir() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().iniciarIncluir();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtAlterar() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().iniciarAlterar();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtExcluir() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().iniciarExcluir();
 }
 
@@ -183,17 +169,15 @@ function fnBtOk() {
   const nome = this.viewer.tfNome.value;
   const telefone = this.viewer.tfTelefone.value;
 
-  // Como defini que o método "efetivar" é um dos métodos incluir, excluir ou alterar
-  // não estou precisando colocar os ninhos de IF abaixo.
   this.viewer.getCtrl().efetivar(endereco, idHospital, nome, telefone);
 
-  // if(this.viewer.getCtrl().getStatus() == Status.INCLUINDO) {
-  //  this.viewer.getCtrl().fnEfetivar(matricula, cpf, nome, email, telefone);
-  //} else if(this.viewer.getCtrl().getStatus() == Status.ALTERANDO) {
-  //  this.viewer.getCtrl().alterar(matricula, cpf, nome, email, telefone);
-  //} else if(this.viewer.getCtrl().getStatus() == Status.EXCLUINDO) {
-  //  this.viewer.getCtrl().excluir(matricula, cpf, nome, email, telefone);
-  //}
+  if (this.viewer.getCtrl().getStatus() == Status.INCLUINDO) {
+    this.viewer.getCtrl().fnEfetivar(idHospital, nome, telefone, endereco);
+  } else if (this.viewer.getCtrl().getStatus() == Status.ALTERANDO) {
+    this.viewer.getCtrl().alterar(idHospital, nome, telefone, endereco);
+  } else if (this.viewer.getCtrl().getStatus() == Status.EXCLUINDO) {
+    this.viewer.getCtrl().excluir(idHospital, nome, telefone, endereco);
+  }
 }
 
 //------------------------------------------------------------------------//

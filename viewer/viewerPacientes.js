@@ -8,11 +8,7 @@ export default class ViewerPaciente {
   #ctrl;
 
   constructor(ctrl) {
-    // Guardo a referência para o controlador do viewer
     this.#ctrl = ctrl;
-    // Mapeamos cada 'element' da página que possui um 'id'
-    // como atributo do objeto Viewer. Use o método 'obterElemento'
-    // para guardar a referência 'document.getElementById'
     this.divNavegar = this.obterElemento("divNavegar");
     this.divComandos = this.obterElemento("divComandos");
     this.divAviso = this.obterElemento("divAviso");
@@ -36,8 +32,6 @@ export default class ViewerPaciente {
     this.tfEmail = this.obterElemento("tfEmail");
     this.tfTelefone = this.obterElemento("tfTelefone");
 
-    // Indico para cada um dos botões, a função a ser
-    // executada no evento 'onclick'
     this.btPrimeiro.onclick = fnBtPrimeiro;
     this.btProximo.onclick = fnBtProximo;
     this.btAnterior.onclick = fnBtAnterior;
@@ -59,8 +53,6 @@ export default class ViewerPaciente {
       throw new ViewerError(
         "Não encontrei um elemento com id '" + idElemento + "'"
       );
-    // Adicionando o atributo 'viewer' no elemento do Viewer. Isso permitirá
-    // que o elemento guarde a referência para o objeto Viewer que o contém.
     elemento.viewer = this;
     return elemento;
   }
@@ -143,55 +135,41 @@ export default class ViewerPaciente {
 //------------------------------------------------------------------------//
 
 function fnBtPrimeiro() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().apresentarPrimeiro();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtProximo() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().apresentarProximo();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtAnterior() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().apresentarAnterior();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtUltimo() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().apresentarUltimo();
 }
 //------------------------------------------------------------------------//
 
 function fnBtIncluir() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().iniciarIncluir();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtAlterar() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().iniciarAlterar();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtExcluir() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().iniciarExcluir();
 }
 
@@ -203,9 +181,15 @@ function fnBtOk() {
   const cpf = this.viewer.tfCpf.value;
   const telefone = this.viewer.tfTelefone.value;
 
-  // Como defini que o método "efetivar" é um dos métodos incluir, excluir ou alterar
-  // não estou precisando colocar os ninhos de IF abaixo.
   this.viewer.getCtrl().efetivar(email, nome, cpf, telefone);
+
+  if (this.viewer.getCtrl().getStatus() == Status.INCLUINDO) {
+    this.viewer.getCtrl().fnEfetivar(email, nome, telefone, cpf);
+  } else if (this.viewer.getCtrl().getStatus() == Status.ALTERANDO) {
+    this.viewer.getCtrl().alterar(email, nome, telefone, cpf);
+  } else if (this.viewer.getCtrl().getStatus() == Status.EXCLUINDO) {
+    this.viewer.getCtrl().excluir(email, nome, telefone, cpf);
+  }
 }
 
 //------------------------------------------------------------------------//

@@ -52,8 +52,6 @@ export default class ViewerServico {
       throw new ViewerError(
         "Não encontrei um elemento com id '" + idElemento + "'"
       );
-    // Adicionando o atributo 'viewer' no elemento do Viewer. Isso permitirá
-    // que o elemento guarde a referência para o objeto Viewer que o contém.
     elemento.viewer = this;
     return elemento;
   }
@@ -133,55 +131,41 @@ export default class ViewerServico {
 //------------------------------------------------------------------------//
 
 function fnBtPrimeiro() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().apresentarPrimeiro();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtProximo() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().apresentarProximo();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtAnterior() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().apresentarAnterior();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtUltimo() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().apresentarUltimo();
 }
 //------------------------------------------------------------------------//
 
 function fnBtIncluir() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().iniciarIncluir();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtAlterar() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().iniciarAlterar();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtExcluir() {
-  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
-  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().iniciarExcluir();
 }
 
@@ -192,17 +176,15 @@ function fnBtOk() {
   const qntAtend = this.viewer.tfQntAtend.value;
   const idServico = this.viewer.tfIdServ.value;
 
-  // Como defini que o método "efetivar" é um dos métodos incluir, excluir ou alterar
-  // não estou precisando colocar os ninhos de IF abaixo.
   this.viewer.getCtrl().efetivar(nomeServico, qntAtend, idServico);
 
-  // if(this.viewer.getCtrl().getStatus() == Status.INCLUINDO) {
-  //  this.viewer.getCtrl().fnEfetivar(matricula, cpf, nome, email, telefone);
-  //} else if(this.viewer.getCtrl().getStatus() == Status.ALTERANDO) {
-  //  this.viewer.getCtrl().alterar(matricula, cpf, nome, email, telefone);
-  //} else if(this.viewer.getCtrl().getStatus() == Status.EXCLUINDO) {
-  //  this.viewer.getCtrl().excluir(matricula, cpf, nome, email, telefone);
-  //}
+  if (this.viewer.getCtrl().getStatus() == Status.INCLUINDO) {
+    this.viewer.getCtrl().fnEfetivar(nomeServico, qntAtend, idServico);
+  } else if (this.viewer.getCtrl().getStatus() == Status.ALTERANDO) {
+    this.viewer.getCtrl().alterar(nomeServico, qntAtend, idServico);
+  } else if (this.viewer.getCtrl().getStatus() == Status.EXCLUINDO) {
+    this.viewer.getCtrl().excluir(nomeServico, qntAtend, idServico);
+  }
 }
 
 //------------------------------------------------------------------------//
