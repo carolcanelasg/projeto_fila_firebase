@@ -1,0 +1,19 @@
+{
+  "name": "Controle de Fila",
+  "short_name": "ContrlFila",
+  "categories": ["organization", "social"],
+  "start_url": "/",
+  "scope": ".",
+  "shortcuts": [
+    {
+      "name": "Controle de Fila",
+      "url": "/",
+      "description": "Controle de Fila"
+    }
+  ],
+
+  "display_override": ["window-control-overlay", "minimal-ui"],
+  "display": "fullscreen",
+  "background_color": "#3E4EB8",
+  "theme_color": "#2F3BA2"
+}

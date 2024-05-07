@@ -1,5 +1,5 @@
 import Status from "/model/Status.js";
-import Fila from "/model/filaDTO.js";
+import Fila from "/model/fila/filaDTO.js";
 import ViewerError from "/viewer/ViewerError.js";
 
 //------------------------------------------------------------------------//
@@ -30,6 +30,7 @@ export default class ViewerFila {
     this.tfTipoFila = this.obterElemento("tfTipoFila");
     this.tfIdFila = this.obterElemento("tfIdFila");
     this.tfTempoMedio = this.obterElemento("tfTempoMedio");
+    this.opcoesServico = this.obterElemento("opcoesServico");
 
     this.btPrimeiro.onclick = fnBtPrimeiro;
     this.btProximo.onclick = fnBtProximo;
@@ -63,6 +64,20 @@ export default class ViewerFila {
   }
 
   //------------------------------------------------------------------------//
+  async #opcoesServico(servicoDaFila) {
+    while (this.opcoesServico.length > 0) {
+      this.opcoesServico.remove(0);
+    }
+
+    let listaServicosDTOs = await this.#ctrl.obterServicosDTOs();
+    for (let i = 0; i < listaServicosDTOs.length; i++) {
+      var opt = document.createElement("option");
+      opt.value = listaServicosDTOs[i].getIdServico();
+      if (opt.value === servicoDaFila.getIdServico()) opt.selected = true;
+      opt.text = listaServicosDTOs[i].getNomeServico();
+      this.opcoesServico.add(opt);
+    }
+  }
 
   async apresentar(pos, qtde, fila) {
     this.configurarNavegacao(pos <= 1, pos == qtde);
@@ -71,11 +86,15 @@ export default class ViewerFila {
       this.tfTipoFila.value = "";
       this.tfIdFila.value = "";
       this.tfTempoMedio.value = "";
+      this.opcoesServico.value = "";
       this.divAviso.innerHTML = " Número de Filas: 0";
     } else {
       this.tfTipoFila.value = fila.getTipoFila();
       this.tfIdFila.value = fila.getIDFila();
       this.tfTempoMedio.value = fila.getTempoMedio();
+
+      let servicoDaFila = await fila.getServicoFila();
+      this.#opcoesServico(servicoDaFila);
 
       this.divAviso.innerHTML =
         "Posição: " + pos + " | Número de Filas: " + qtde;
@@ -102,6 +121,7 @@ export default class ViewerFila {
       this.tfTipoFila.disabled = false;
       this.tfIdFila.disabled = false;
       this.tfTempoMedio.disabled = false;
+      this.opcoesServico.disabled = false;
       this.divAviso.innerHTML = "";
     } else {
       this.divAviso.innerHTML = "Deseja excluir este registro?";
@@ -111,6 +131,7 @@ export default class ViewerFila {
       this.tfIdFila.value = "";
       this.tfTipoFila.value = "";
       this.tfTempoMedio.value = "";
+      this.opcoesServico.value = "";
     }
   }
 
@@ -124,6 +145,7 @@ export default class ViewerFila {
     this.tfIdFila.disabled = true;
     this.tfTipoFila.disabled = true;
     this.tfTempoMedio.disabled = true;
+    this.opcoesServico.disabled = true;
   }
 }
 
@@ -176,15 +198,18 @@ function fnBtOk() {
   const tipoFila = this.viewer.tfTipoFila.value;
   const idFIla = this.viewer.tfIdFila.value;
   const tempoMedio = this.viewer.tfTempoMedio.value;
+  const opcoesServico = this.viewer.opcoesServico.value;
 
-  this.viewer.getCtrl().efetivar(tipoFila, idFIla, tempoMedio);
+  this.viewer.getCtrl().efetivar(tipoFila, idFIla, tempoMedio, opcoesServico);
 
   if (this.viewer.getCtrl().getStatus() == Status.INCLUINDO) {
-    this.viewer.getCtrl().fnEfetivar(tipoFila, idFIla, tempoMedio);
+    this.viewer
+      .getCtrl()
+      .fnEfetivar(tipoFila, idFIla, tempoMedio, opcoesServico);
   } else if (this.viewer.getCtrl().getStatus() == Status.ALTERANDO) {
-    this.viewer.getCtrl().alterar(tipoFila, idFIla, tempoMedio);
+    this.viewer.getCtrl().alterar(tipoFila, idFIla, tempoMedio, opcoesServico);
   } else if (this.viewer.getCtrl().getStatus() == Status.EXCLUINDO) {
-    this.viewer.getCtrl().excluir(tipoFila, idFIla, tempoMedio);
+    this.viewer.getCtrl().excluir(tipoFila, idFIla, tempoMedio, opcoesServico);
   }
 }
 

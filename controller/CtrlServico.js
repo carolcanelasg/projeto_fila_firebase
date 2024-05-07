@@ -1,71 +1,72 @@
 "use strict";
 
-import Servico from "../model/servico/Servico"
-
+import Servico from "../model/servico/Servico.js";
 
 export default class CtrlServico {
-  
   //-----------------------------------------------------------------------------------------//
 
   //
   // Atributos do Controlador
   //
-  #daoServico;      // Referência para o Data Access Object para o Store de pacientes
+  #daoServico; // Referência para o Data Access Object para o Store de pacientes
   #daoReserva; // Referência para o Data Access Object para o Store de Cursos
-  #viewerServico;   // Referência para o gerenciador do viewerServico 
+  #viewerServico; // Referência para o gerenciador do viewerServico
   #posAtual; // Indica a posição do objeto paciente que estiver sendo apresentado
-  #status;   // Indica o que o controlador está fazendo 
-  
+  #status; // Indica o que o controlador está fazendo
+
   //-----------------------------------------------------------------------------------------//
 
   constructor() {
     this.#daoServico = new daoServico();
     this.#viewerServico = new viewerServico(this);
     this.#posAtual = 1;
-    this.#atualizarContextoNavegacao();    
+    this.#atualizarContextoNavegacao();
   }
-  
+
   //-----------------------------------------------------------------------------------------//
 
   async obterReservaDTOs() {
     return await this.#daoReserva.obterReservas(true);
   }
-  
+
   //-----------------------------------------------------------------------------------------//
 
-  async #atualizarContextoNavegacao() { //////////////////////////////////
+  async #atualizarContextoNavegacao() {
+    //////////////////////////////////
     // Guardo a informação que o controlador está navegando pelos dados
     this.#status = Status.NAVEGANDO;
 
-    // Determina ao viewerServico que ele está apresentando dos dados 
+    // Determina ao viewerServico que ele está apresentando dos dados
     this.#viewerServico.statusApresentacao();
-    
+
     // Solicita ao DAO que dê a lista de todos os pacientes presentes na base
     let conjServicos = await this.#daoServico.obterServicos();
-    
+
     // Se a lista de pacientes estiver vazia
-    if(conjServicos.length == 0) {
+    if (conjServicos.length == 0) {
       // Posição Atual igual a zero indica que não há objetos na base
       this.#posAtual = 0;
-      
+
       // Informo ao viewerServico que não deve apresentar nada
       this.#viewerServico.apresentar(0, 0, null);
-    }
-    else {
+    } else {
       // Se é necessário ajustar a posição atual, determino que ela passa a ser 1
-      if(this.#posAtual == 0 || this.#posAtual > conjServicos.length)
+      if (this.#posAtual == 0 || this.#posAtual > conjServicos.length)
         this.#posAtual = 1;
       // Peço ao viewerServico que apresente o objeto da posição atual
-      this.#viewerServico.apresentar(this.#posAtual, conjServicos.length, new ServicoDTO(conjServicos[this.#posAtual - 1]));
+      this.#viewerServico.apresentar(
+        this.#posAtual,
+        conjServicos.length,
+        new ServicoDTO(conjServicos[this.#posAtual - 1])
+      );
     }
   }
-  
+
   //-----------------------------------------------------------------------------------------//
 
   async apresentarPrimeiro() {
     let conjServicos = await this.#daoServico.obterServicos(); ///////////////////////////
-    if(conjServicos.length > 0)
-      this.#posAtual = 1;
+    if (conjServicos.length > 0) this.#posAtual = 1;
     this.#atualizarContextoNavegacao();
   }
 
@@ -73,30 +74,28 @@ export default class CtrlServico {
 
   async apresentarProximo() {
     let conjServicos = await this.#daoServico.obterServicos(); ////////////////////////
-    if(this.#posAtual < conjServicos.length)
-      this.#posAtual++;
+    if (this.#posAtual < conjServicos.length) this.#posAtual++;
     this.#atualizarContextoNavegacao();
   }
 
   //-----------------------------------------------------------------------------------------//
 
   async apresentarAnterior() {
-    let conjServicos = await this.#daoServico.obterServicos();  ////////////////////////
-    if(this.#posAtual > 1)
-      this.#posAtual--;
+    let conjServicos = await this.#daoServico.obterServicos(); ////////////////////////
+    if (this.#posAtual > 1) this.#posAtual--;
     this.#atualizarContextoNavegacao();
   }
 
   //-----------------------------------------------------------------------------------------//
 
   async apresentarUltimo() {
-    let conjServicos = await this.#daoServico.obterServicos();  ////////////////////////
+    let conjServicos = await this.#daoServico.obterServicos(); ////////////////////////
     this.#posAtual = conjServicos.length;
     this.#atualizarContextoNavegacao();
   }
 
   //-----------------------------------------------------------------------------------------//
-  
+
   iniciarIncluir() {
     this.#status = Status.INCLUINDO;
     this.#viewerServico.statusEdicao(Status.INCLUINDO);
@@ -107,7 +106,7 @@ export default class CtrlServico {
   }
 
   //-----------------------------------------------------------------------------------------//
-  
+
   iniciarAlterar() {
     this.#status = Status.ALTERANDO;
     this.#viewerServico.statusEdicao(Status.ALTERANDO);
@@ -118,7 +117,7 @@ export default class CtrlServico {
   }
 
   //-----------------------------------------------------------------------------------------//
-  
+
   iniciarExcluir() {
     this.#status = Status.EXCLUINDO;
     this.#viewerServico.statusEdicao(Status.EXCLUINDO);
@@ -129,62 +128,63 @@ export default class CtrlServico {
   }
 
   //-----------------------------------------------------------------------------------------//
- 
+
   async incluir(nome_servico, quantidade_atendimento, id_servico) {
-    if(this.#status == Status.INCLUINDO) {
+    if (this.#status == Status.INCLUINDO) {
       try {
-        let servico = new servico(nome_servico, quantidade_atendimento, id_servico);
-        await this.#daoServico.incluir(servico); 
+        let servico = new servico(
+          nome_servico,
+          quantidade_atendimento,
+          id_servico
+        );
+        await this.#daoServico.incluir(servico);
         this.#status = Status.NAVEGANDO;
         this.#atualizarContextoNavegacao();
-      }
-      catch(e) {
+      } catch (e) {
         alert(e);
       }
-    }    
+    }
   }
 
   //-----------------------------------------------------------------------------------------//
- 
+
   async alterar(nome_servico, quantidade_atendimento, id_servico) {
-    if(this.#status == Status.ALTERANDO) {
+    if (this.#status == Status.ALTERANDO) {
       try {
-        let servico = await this.#daoServico.obterServicoPeloId(id_servico); 
-        if(servico == null) {
+        let servico = await this.#daoServico.obterServicoPeloId(id_servico);
+        if (servico == null) {
           alert("servico com o id " + id_servico + " não encontrado.");
         } else {
           servico.setNomeServico(nome_servico);
-          servico.setQuantidadeAtendimento(quantidade_atendimento)
+          servico.setQuantidadeAtendimento(quantidade_atendimento);
           servico.id_servico(id_servico);
-          await this.#daoServico.alterar(servico); 
+          await this.#daoServico.alterar(servico);
         }
         this.#status = Status.NAVEGANDO;
         this.#atualizarContextoNavegacao();
-      }
-      catch(e) {
+      } catch (e) {
         alert(e);
       }
-    }    
+    }
   }
 
   //-----------------------------------------------------------------------------------------//
- 
+
   async excluir(id_servico) {
-    if(this.#status == Status.EXCLUINDO) {
+    if (this.#status == Status.EXCLUINDO) {
       try {
-        let servico = await this.#daoServico.obterServicoPeloId(id_servico); 
-        if(servico == null) {
+        let servico = await this.#daoServico.obterServicoPeloId(id_servico);
+        if (servico == null) {
           alert("servico com a id_servico " + id_servico + " não encontrado.");
         } else {
-          await this.#daoServico.excluir(servico); 
+          await this.#daoServico.excluir(servico);
         }
         this.#status = Status.NAVEGANDO;
         this.#atualizarContextoNavegacao();
-      }
-      catch(e) {
+      } catch (e) {
         alert(e);
       }
-    }    
+    }
   }
 
   //-----------------------------------------------------------------------------------------//
@@ -203,26 +203,3 @@ export default class CtrlServico {
 }
 
 //------------------------------------------------------------------------//
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

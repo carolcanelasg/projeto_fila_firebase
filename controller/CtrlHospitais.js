@@ -1,72 +1,72 @@
 "use strict";
 
-import Hospitais from "../model/hospitais/Hospitais";
-
-
+import Hospitais from "../model/hospitais/Hospitais.js";
 
 export default class CtrlHospitais {
-  
   //-----------------------------------------------------------------------------------------//
 
   //
   // Atributos do Controlador
   //
-  #daoHospitais;      // Referência para o Data Access Object para o Store de pacientes
+  #daoHospitais; // Referência para o Data Access Object para o Store de pacientes
   #daoReserva; // Referência para o Data Access Object para o Store de Cursos
-  #viewerHospitais;   // Referência para o gerenciador do viewerHospitais 
+  #viewerHospitais; // Referência para o gerenciador do viewerHospitais
   #posAtual; // Indica a posição do objeto paciente que estiver sendo apresentado
-  #status;   // Indica o que o controlador está fazendo 
-  
+  #status; // Indica o que o controlador está fazendo
+
   //-----------------------------------------------------------------------------------------//
 
   constructor() {
     this.#daoHospitais = new daoHospitais();
     this.#viewerHospitais = new viewerHospitais(this);
     this.#posAtual = 1;
-    this.#atualizarContextoNavegacao();    
+    this.#atualizarContextoNavegacao();
   }
-  
+
   //-----------------------------------------------------------------------------------------//
 
   async obterReservaDTOs() {
     return await this.#daoReserva.obterReservas(true);
   }
-  
+
   //-----------------------------------------------------------------------------------------//
 
-  async #atualizarContextoNavegacao() { //////////////////////////////////
+  async #atualizarContextoNavegacao() {
+    //////////////////////////////////
     // Guardo a informação que o controlador está navegando pelos dados
     this.#status = Status.NAVEGANDO;
 
-    // Determina ao viewerHospitais que ele está apresentando dos dados 
+    // Determina ao viewerHospitais que ele está apresentando dos dados
     this.#viewerHospitais.statusApresentacao();
-    
+
     // Solicita ao DAO que dê a lista de todos os pacientes presentes na base
     let conjHospitais = await this.#daoHospitais.obterPacientes();
-    
+
     // Se a lista de pacientes estiver vazia
-    if(conjHospitais.length == 0) {
+    if (conjHospitais.length == 0) {
       // Posição Atual igual a zero indica que não há objetos na base
       this.#posAtual = 0;
-      
+
       // Informo ao viewerHospitais que não deve apresentar nada
       this.#viewerHospitais.apresentar(0, 0, null);
-    }
-    else {
+    } else {
       // Se é necessário ajustar a posição atual, determino que ela passa a ser 1
-      if(this.#posAtual == 0 || this.#posAtual > conjHospitais.length)
+      if (this.#posAtual == 0 || this.#posAtual > conjHospitais.length)
         this.#posAtual = 1;
       // Peço ao viewerHospitais que apresente o objeto da posição atual
-      this.#viewerHospitais.apresentar(this.#posAtual, conjHospitais.length, new hospitaisDTO(conjHospitais[this.#posAtual - 1]));
+      this.#viewerHospitais.apresentar(
+        this.#posAtual,
+        conjHospitais.length,
+        new hospitaisDTO(conjHospitais[this.#posAtual - 1])
+      );
     }
   }
-  
+
   //-----------------------------------------------------------------------------------------//
 
   async apresentarPrimeiro() {
     let conjHospitais = await this.#daoHospitais.obterPacientes(); ///////////////////////////
-    if(conjHospitais.length > 0)
-      this.#posAtual = 1;
+    if (conjHospitais.length > 0) this.#posAtual = 1;
     this.#atualizarContextoNavegacao();
   }
 
@@ -74,30 +74,28 @@ export default class CtrlHospitais {
 
   async apresentarProximo() {
     let conjHospitais = await this.#daoHospitais.obterPacientes(); ////////////////////////
-    if(this.#posAtual < conjHospitais.length)
-      this.#posAtual++;
+    if (this.#posAtual < conjHospitais.length) this.#posAtual++;
     this.#atualizarContextoNavegacao();
   }
 
   //-----------------------------------------------------------------------------------------//
 
   async apresentarAnterior() {
-    let conjHospitais = await this.#daoHospitais.obterPacientes();  ////////////////////////
-    if(this.#posAtual > 1)
-      this.#posAtual--;
+    let conjHospitais = await this.#daoHospitais.obterPacientes(); ////////////////////////
+    if (this.#posAtual > 1) this.#posAtual--;
     this.#atualizarContextoNavegacao();
   }
 
   //-----------------------------------------------------------------------------------------//
 
   async apresentarUltimo() {
-    let conjHospitais = await this.#daoHospitais.obterPacientes();  ////////////////////////
+    let conjHospitais = await this.#daoHospitais.obterPacientes(); ////////////////////////
     this.#posAtual = conjHospitais.length;
     this.#atualizarContextoNavegacao();
   }
 
   //-----------------------------------------------------------------------------------------//
-  
+
   iniciarIncluir() {
     this.#status = Status.INCLUINDO;
     this.#viewerHospitais.statusEdicao(Status.INCLUINDO);
@@ -108,7 +106,7 @@ export default class CtrlHospitais {
   }
 
   //-----------------------------------------------------------------------------------------//
-  
+
   iniciarAlterar() {
     this.#status = Status.ALTERANDO;
     this.#viewerHospitais.statusEdicao(Status.ALTERANDO);
@@ -119,7 +117,7 @@ export default class CtrlHospitais {
   }
 
   //-----------------------------------------------------------------------------------------//
-  
+
   iniciarExcluir() {
     this.#status = Status.EXCLUINDO;
     this.#viewerHospitais.statusEdicao(Status.EXCLUINDO);
@@ -130,63 +128,60 @@ export default class CtrlHospitais {
   }
 
   //-----------------------------------------------------------------------------------------//
- 
+
   async incluir(nome, endereco, telefone, id_hospital) {
-    if(this.#status == Status.INCLUINDO) {
+    if (this.#status == Status.INCLUINDO) {
       try {
         let hospital = new Hospitais(nome, endereco, telefone, id_hospital);
-        await this.#daoHospitais.incluir(hospital); 
+        await this.#daoHospitais.incluir(hospital);
         this.#status = Status.NAVEGANDO;
         this.#atualizarContextoNavegacao();
-      }
-      catch(e) {
+      } catch (e) {
         alert(e);
       }
-    }    
+    }
   }
 
   //-----------------------------------------------------------------------------------------//
- 
+
   async alterar(nome, endereco, telefone, id_hospital) {
-    if(this.#status == Status.ALTERANDO) {
+    if (this.#status == Status.ALTERANDO) {
       try {
-        let hospital = await this.#daoHospitais.obterPacientePeloCpf(cpf); 
-        if(hospital == null) {
+        let hospital = await this.#daoHospitais.obterPacientePeloCpf(cpf);
+        if (hospital == null) {
           alert("hospital com o cpf " + cpf + " não encontrado.");
         } else {
           hospital.setNome(nome);
-          hospital.setEndereco(endereco)
+          hospital.setEndereco(endereco);
           hospital.setTelefone(telefone);
           hospital.setId(id_hospital);
-          await this.#daoHospitais.alterar(hospital); 
+          await this.#daoHospitais.alterar(hospital);
         }
         this.#status = Status.NAVEGANDO;
         this.#atualizarContextoNavegacao();
-      }
-      catch(e) {
+      } catch (e) {
         alert(e);
       }
-    }    
+    }
   }
 
   //-----------------------------------------------------------------------------------------//
- 
+
   async excluir(cpf) {
-    if(this.#status == Status.EXCLUINDO) {
+    if (this.#status == Status.EXCLUINDO) {
       try {
-        let hospital = await this.#daoHospitais.obterPacientePeloCpf(cpf); 
-        if(hospital == null) {
+        let hospital = await this.#daoHospitais.obterPacientePeloCpf(cpf);
+        if (hospital == null) {
           alert("hospital com a cpf " + cpf + " não encontrado.");
         } else {
-          await this.#daoHospitais.excluir(hospital); 
+          await this.#daoHospitais.excluir(hospital);
         }
         this.#status = Status.NAVEGANDO;
         this.#atualizarContextoNavegacao();
-      }
-      catch(e) {
+      } catch (e) {
         alert(e);
       }
-    }    
+    }
   }
 
   //-----------------------------------------------------------------------------------------//
@@ -205,26 +200,3 @@ export default class CtrlHospitais {
 }
 
 //------------------------------------------------------------------------//
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

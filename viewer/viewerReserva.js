@@ -4,7 +4,7 @@ import ViewerError from "/viewer/ViewerError.js";
 
 //------------------------------------------------------------------------//
 
-export default class ViewerAluno {
+export default class ViewerReserva {
   #ctrl;
 
   constructor(ctrl) {
@@ -30,6 +30,9 @@ export default class ViewerAluno {
     this.tfNomePaciente = this.obterElemento("tfNomePaciente");
     this.tfTipoFila = this.obterElemento("tfTipoFila");
     this.tfData = this.obterElemento("tfData");
+    this.tfNomePaciente = this.obterElemento("servicoReserva");
+    this.tfTipoFila = this.obterElemento("nomeHospital");
+    this.tfData = this.obterElemento("idReserva");
 
     this.btPrimeiro.onclick = fnBtPrimeiro;
     this.btProximo.onclick = fnBtProximo;
@@ -64,6 +67,66 @@ export default class ViewerAluno {
 
   //------------------------------------------------------------------------//
 
+  async #opcoesPacientes(tfNomePaciente) {
+    while (this.tfNomePaciente.length > 0) {
+      this.tfNomePaciente.remove(0);
+    }
+
+    let listaPacientesDTOs = await this.#ctrl.obterPacientesDTOs();
+    for (let i = 0; i < listaPacientesDTOs.length; i++) {
+      var opt = document.createElement("option");
+      opt.value = listaPacientesDTOs[i].getCpf();
+      if (opt.value === tfNomePaciente.getCpf()) opt.selected = true;
+      opt.text = listaPacientesDTOs[i].getNomePaciente();
+      this.tfNomePaciente.add(opt);
+    }
+  }
+
+  async #opcoesFila(tfTipoFila) {
+    while (this.tfTipoFila.length > 0) {
+      this.tfTipoFila.remove(0);
+    }
+
+    let listaFilasDTOs = await this.#ctrl.obterFilasDTOs();
+    for (let i = 0; i < listaFilasDTOs.length; i++) {
+      var opt = document.createElement("option");
+      opt.value = listaFilasDTOs[i].getIdFila();
+      if (opt.value === tfTipoFila.getIdFila()) opt.selected = true;
+      opt.text = listaFilasDTOs[i].getTipoFila();
+      this.tfTipoFila.add(opt);
+    }
+  }
+
+  async #opcoesServicos(servicoDaFila) {
+    while (this.servicoDaFila.length > 0) {
+      this.servicoDaFila.remove(0);
+    }
+
+    let listaServicosDTOs = await this.#ctrl.obterServicosDTOs();
+    for (let i = 0; i < listaServicosDTOs.length; i++) {
+      var opt = document.createElement("option");
+      opt.value = listaServicosDTOs[i].getIdServico();
+      if (opt.value === servicoDaFila.getIdServico()) opt.selected = true;
+      opt.text = listaServicosDTOs[i].getNomeServico();
+      this.servicoDaFila.add(opt);
+    }
+  }
+
+  async #opcoesHospital(nomeHospital) {
+    while (this.nomeHospital.length > 0) {
+      this.nomeHospital.remove(0);
+    }
+
+    let listaHospitaisDTOs = await this.#ctrl.obterHospitaisDTOs();
+    for (let i = 0; i < listaHospitaisDTOs.length; i++) {
+      var opt = document.createElement("option");
+      opt.value = listaHospitaisDTOs[i].getIdHospital();
+      if (opt.value === nomeHospital.getIdHospital()) opt.selected = true;
+      opt.text = listaHospitaisDTOs[i].getNomeHospital();
+      this.nomeHospital.add(opt);
+    }
+  }
+
   async apresentar(pos, qtde, reserva) {
     this.configurarNavegacao(pos <= 1, pos == qtde);
 
@@ -71,11 +134,17 @@ export default class ViewerAluno {
       this.tfNomePaciente.value = "";
       this.tfTipoFila.value = "";
       this.tfData.value = "";
+      this.servicoDaFila.value = "";
+      this.nomeHospital.value = "";
+      this.idReserva.value = "";
       this.divAviso.innerHTML = " Número de Reservas: 0";
     } else {
       this.tfNomePaciente.value = reserva.getNomePaciente();
       this.tfTipoFila.value = reserva.getTipoFila();
       this.tfData.value = reserva.getData();
+      this.servicoDaFila.value = reserva.getServicoFila();
+      this.nomeHospital.value = reserva.getNomeHospital();
+      this.idReserva.value = reserva.getIdReserva();
 
       this.divAviso.innerHTML =
         "Posição: " + pos + " | Número de Reservas: " + qtde;
@@ -102,6 +171,9 @@ export default class ViewerAluno {
       this.tfNomePaciente.disabled = false;
       this.tfTipoFila.disabled = false;
       this.tfData.disabled = false;
+      this.servicoDaFila.disabled = false;
+      this.idReserva.disabled = false;
+      this.nomeHospital.disabled = false;
       this.divAviso.innerHTML = "";
     } else {
       this.divAviso.innerHTML = "Deseja excluir este registro?";
@@ -110,6 +182,9 @@ export default class ViewerAluno {
       this.tfNomePaciente.value = "";
       this.tfTipoFila.value = "";
       this.tfData.value = "";
+      this.servicoDaFila.value = "";
+      this.idReserva.value = "";
+      this.nomeHospital.value = "";
     }
   }
 
@@ -122,7 +197,10 @@ export default class ViewerAluno {
     this.divDialogo.hidden = true;
     this.tfTipoFila.disabled = true;
     this.tfNomePaciente.disabled = true;
+    this.servicoDaFila.disabled = true;
     this.tfData.disabled = true;
+    this.idReserva.disabled = true;
+    this.nomeHospital.disabled = true;
   }
 }
 
@@ -175,14 +253,53 @@ function fnBtOk() {
   const nomePaciente = this.viewer.tfNomePaciente.value;
   const tipoFila = this.viewer.tfTipoFila.value;
   const data = this.viewer.tfData.value;
-  this.viewer.getCtrl().efetivar(nomePaciente, tipoFila, data);
+  const nomeHospital = this.viewer.nomeHospital.value;
+  const idReserva = this.viewer.servicoDaFila.value;
+  const servicoFila = this.viewer.idReserva.value;
+  this.viewer
+    .getCtrl()
+    .efetivar(
+      nomePaciente,
+      tipoFila,
+      data,
+      nomeHospital,
+      idReserva,
+      servicoFila
+    );
 
   if (this.viewer.getCtrl().getStatus() == Status.INCLUINDO) {
-    this.viewer.getCtrl().fnEfetivar(nomePaciente, tipoFila, data);
+    this.viewer
+      .getCtrl()
+      .fnEfetivar(
+        nomePaciente,
+        tipoFila,
+        data,
+        nomeHospital,
+        idReserva,
+        servicoFila
+      );
   } else if (this.viewer.getCtrl().getStatus() == Status.ALTERANDO) {
-    this.viewer.getCtrl().alterar(nomePaciente, tipoFila, data);
+    this.viewer
+      .getCtrl()
+      .alterar(
+        nomePaciente,
+        tipoFila,
+        data,
+        nomeHospital,
+        idReserva,
+        servicoFila
+      );
   } else if (this.viewer.getCtrl().getStatus() == Status.EXCLUINDO) {
-    this.viewer.getCtrl().excluir(nomePaciente, tipoFila, data);
+    this.viewer
+      .getCtrl()
+      .excluir(
+        nomePaciente,
+        tipoFila,
+        data,
+        nomeHospital,
+        idReserva,
+        servicoFila
+      );
   }
 }
 

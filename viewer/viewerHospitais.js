@@ -1,5 +1,5 @@
 import Status from "/model/Status.js";
-import Hospital from "/model/hospitaisDTO.js";
+import Hospital from "/model/hospitais/hospitaisDTO.js";
 import ViewerError from "/viewer/ViewerError.js";
 
 export default class ViewerHospital {
