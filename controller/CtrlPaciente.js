@@ -1,6 +1,7 @@
 "use strict";
 
 import Paciente from "../model/paciente/Paciente.js";
+import DaoPaciente from "../model/paciente/DaoPaciente.js";
 
 export default class CtrlPaciente {
   //-----------------------------------------------------------------------------------------//
@@ -17,7 +18,7 @@ export default class CtrlPaciente {
   //-----------------------------------------------------------------------------------------//
 
   constructor() {
-    this.#daoPaciente = new daoPaciente();
+    this.#daoPaciente = new DaoPaciente();
     this.#viewerPaciente = new viewerPacientes(this);
     this.#posAtual = 1;
     this.#atualizarContextoNavegacao();
