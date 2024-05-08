@@ -54,7 +54,7 @@ export default class CtrlSessao {
 
   async init() {
     try {
-      this.usuario = await this.verificandoLogin();
+      //this.usuario = await this.verificandoLogin();
       if (document.URL.includes("pacientes.html"))
         this.ctrlAtual = new CtrlPacientes();
       else if (document.URL.includes("hospitais.html"))
