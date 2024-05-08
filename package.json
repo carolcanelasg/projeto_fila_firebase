@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "firebase": "^10.11.1"
+  },
+  "devDependencies": {
+    "npm": "^10.7.0"
   }
 }

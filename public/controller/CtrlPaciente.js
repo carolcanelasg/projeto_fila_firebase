@@ -2,6 +2,7 @@
 
 import Paciente from "../model/paciente/Paciente.js";
 import DaoPaciente from "../model/paciente/DaoPaciente.js";
+import viewerPaciente from "../viewer/viewerPacientes.js";
 
 export default class CtrlPaciente {
   //-----------------------------------------------------------------------------------------//
@@ -19,7 +20,7 @@ export default class CtrlPaciente {
 
   constructor() {
     this.#daoPaciente = new DaoPaciente();
-    this.#viewerPaciente = new viewerPacientes(this);
+    this.#viewerPaciente = new viewerPaciente(this);
     this.#posAtual = 1;
     this.#atualizarContextoNavegacao();
   }
@@ -97,6 +98,7 @@ export default class CtrlPaciente {
   //-----------------------------------------------------------------------------------------//
 
   iniciarIncluir() {
+    console.log("chamei aqui");
     this.#status = Status.INCLUINDO;
     this.#viewerPaciente.statusEdicao(Status.INCLUINDO);
     // Guardo a informação que o método de efetivação da operação é o método incluir (ou seja,

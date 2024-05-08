@@ -1,0 +1,35 @@
+{
+  "rules": {
+    "usuarios": {
+      ".indexOn": ["email"],
+      "$uid": {
+        ".read": "$uid === auth.uid || auth.token.isAdmin == true",
+        ".write": "auth.token.isAdmin == true",
+        "pacientes": {
+          ".indexOn": ["cpf"],
+          ".read": "root.child('usuarios').child(auth.uid).exists() === true && $uid === auth.uid",
+          ".write": "root.child('usuarios').child(auth.uid).exists() === true"
+        },
+        "reservas": {
+          ".read": "root.child('usuarios').child(auth.uid).exists() === true && $uid === auth.uid",
+          ".write": "root.child('usuarios').child(auth.uid).exists() === true" 
+        }
+      }
+    },
+    "hospitais": {
+      ".indexOn": ["id"],
+      ".read": "root.child('usuarios').child(auth.uid).exists() === true",
+      ".write": "auth != null && root.child('usuarios').child(auth.uid).child('tipo').val() === 'administrador'"
+    },
+    "servicos": {
+      ".indexOn": ["id"],
+      ".read": "root.child('usuarios').child(auth.uid).exists() === true",
+      ".write": "auth != null && root.child('usuarios').child(auth.uid).child('tipo').val() === 'administrador'"
+    },
+    "tipos_de_fila": {
+      ".indexOn": ["id"],
+      ".read": "auth != null",
+      ".write": "auth != null && root.child('usuarios').child(auth.uid).child('tipo').val() === 'administrador'"
+    }
+  }
+}

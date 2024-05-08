@@ -1,6 +1,6 @@
-import Status from "/model/Status.js";
-import Paciente from "/model/pacienteDTO.js";
-import ViewerError from "/viewer/ViewerError.js";
+import Status from "../model/status.js";
+import Paciente from "../model/paciente/pacienteDTO.js";
+import ViewerError from "../viewer/viewerError.js";
 
 //------------------------------------------------------------------------//
 

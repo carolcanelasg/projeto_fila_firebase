@@ -54,7 +54,7 @@ export default class CtrlSessao {
 
   async init() {
     try {
-      //this.usuario = await this.verificandoLogin();
+      this.usuario = await this.verificandoLogin();
       if (document.URL.includes("pacientes.html"))
         this.ctrlAtual = new CtrlPacientes();
       else if (document.URL.includes("hospitais.html"))
@@ -74,10 +74,10 @@ export default class CtrlSessao {
 
   async verificandoLogin() {
     return new Promise((resolve, reject) => {
-      //const analytics = getAnalytics(app);
-      //const provider = new GoogleAuthProvider();
-      //provider.addScope("https://www.googleapis.com/auth/userinfo.email");
-      //provider.addScope("https://www.googleapis.com/auth/userinfo.profile");
+      const analytics = getAnalytics(app);
+      const provider = new GoogleAuthProvider();
+      provider.addScope("https://www.googleapis.com/auth/userinfo.email");
+      provider.addScope("https://www.googleapis.com/auth/userinfo.profile");
       const auth = getAuth(app);
       auth.setPersistence(browserSessionPersistence);
       onAuthStateChanged(auth, async (user) => {
