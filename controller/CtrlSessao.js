@@ -81,7 +81,7 @@ export default class CtrlSessao {
       const auth = getAuth(app);
       auth.setPersistence(browserSessionPersistence);
       onAuthStateChanged(auth, async (user) => {
-        if (user) {
+        /*if (user) {
           this.#daoUsuario = new DaoUsuario();
           let usrSistema = await this.#daoUsuario.obterUsuarioPeloUID(user.uid);
           if (usrSistema == null) {
@@ -102,7 +102,7 @@ export default class CtrlSessao {
           }
         } else {
           reject("Você não realizou a autenticação via Google");
-        }
+        }*/
       });
     });
   }
