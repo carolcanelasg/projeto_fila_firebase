@@ -6,7 +6,7 @@ import { getDatabase, ref, query, onValue, onChildAdded, orderByChild,
 
 
 import Paciente from "/model/Paciente.js";
-import Paciente from "/model/PacienteDTO.js";
+import PacienteDTO from "/model/PacienteDTO.js";
 import ModelError from "/model/ModelError.js";
 
 export default class DaoPaciente {
