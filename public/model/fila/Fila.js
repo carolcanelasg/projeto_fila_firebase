@@ -53,25 +53,23 @@ export default class Fila {
 
   //-----------------------------------------------------------------------------------------//
 
-  getServicoFila() {
+  getServico() {
     return this.servico;
   }
-
+  
   //-----------------------------------------------------------------------------------------//
 
-  setServicoFila(servico) {
-    if (!Fila.validarServicoFila(servico))
+  setServico(servico) {
+    if(!Aluno.validarServico(servico))
       throw new ModelError("Serviço inválido: " + servico);
     this.servico = servico;
   }
 
   //-----------------------------------------------------------------------------------------//
 
-  static validarServicoFila(servico) {
-    if (servico == null || servico == "" || servico == undefined) return false;
-    if (servico.length > 40) return false;
-    const padraoServicoFila = /[A-Z][a-z] */;
-    if (!padraoServicoFila.test(servico)) return false;
+  static validarServico(servico) {
+    if(servico == null || servico == undefined)
+      return false;
     return true;
   }
 

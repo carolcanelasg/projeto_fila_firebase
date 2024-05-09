@@ -4,9 +4,12 @@ export default class Reserva {
   
   //-----------------------------------------------------------------------------------------//
   
-  constructor(nome_paciente, tipo_fila, data) {
+  constructor(nome_paciente, tipo_servico, tipo_fila, hospital, id_reserva, data) {
     this.setNomePaciente(nome_paciente);
+    this.setTipoServico(tipo_servico);
     this.setTipoFila(tipo_fila);
+    this,setHospital(hospital);
+    this.setIdReserva(id_reserva);
     this.setData(data)
   }
 
@@ -26,6 +29,20 @@ export default class Reserva {
 
   //-----------------------------------------------------------------------------------------//
 
+  getTipoServico(){
+    return this.tipo_servico;
+  }
+
+  //-----------------------------------------------------------------------------------------//
+
+  setTipoServico(tipo_servico) {
+    if(!Reserva.validarTipoServico(tipo_servico))
+      throw new ModelError("Serviço inválido: " + tipo_servico);
+    this.tipo_servico = tipo_servico;
+  }
+
+  //-----------------------------------------------------------------------------------------//
+
   getTipoFila() {
     return this.tipo_fila;
   }
@@ -38,6 +55,34 @@ export default class Reserva {
     this.tipo_fila = tipoFila;
   }
   
+  //-----------------------------------------------------------------------------------------//
+
+  getHospital() {
+    return this.hospital;
+  }
+
+  //-----------------------------------------------------------------------------------------//
+
+  setHospital(hospital) {
+    if(!Reserva.validarHospital(hospital))
+      throw new ModelError("Hospital inválido: " + hospital);
+    this.hospital = hospital;
+  }
+
+  //-----------------------------------------------------------------------------------------//
+
+  getIdReserva() {
+    return this.id_reserva;
+  }
+
+  //-----------------------------------------------------------------------------------------//
+
+  setIdReserva(id_reserva) {
+    if(!Reserva.validarIdReserva(id_reserva))
+      throw new ModelError("ID inválido: " + id_reserva);
+    this.id_reserva = id_reserva;
+  }
+
   //-----------------------------------------------------------------------------------------//
 
   getData() {
@@ -54,27 +99,35 @@ export default class Reserva {
   
   //-----------------------------------------------------------------------------------------//
 
-  static validarNome(nome) {
-    if(nome == null || nome == "" || nome == undefined)
-      return false;
-    if (nome.length > 40) 
-      return false;
-    const padraoNome = /[A-Z][a-z] */;
-    if (!padraoNome.test(nome)) 
+  static validarNome(nome_paciente) {
+    if(nome_paciente == null || nome_paciente == undefined)
       return false;
     return true;
   }
 
   //-----------------------------------------------------------------------------------------//
 
-  static validarTipoFila(tipoFila) {
-    if(tipoFila == null || tipoFila == "" || tipoFila == undefined)
+  static validarTipoServico(tipo_servico) {
+    if(tipo_servico == null || tipo_servico == undefined)
       return false;
-    if (tipoFila.length > 40) 
+    return true;
+  }
+
+  //-----------------------------------------------------------------------------------------//
+
+  static validarTipoFila(tipo_fila) {
+    if(tipo_fila == null || tipo_fila == undefined)
       return false;
-    const padraoTipoFila = /[A-Z][a-z] */;
-    if (!padraoTipoFila.test(tipoFila)) 
+    return true;
+  }
+
+  //-----------------------------------------------------------------------------------------//
+
+  static validarId(id_reserva) {
+    if (id_reserva == null || id_reserva == "" || id_reserva == undefined)
       return false;
+    const padraoID = /[0-5]/;
+    if (!padraoID.test(id_reserva)) return false;
     return true;
   }
 
@@ -89,8 +142,7 @@ export default class Reserva {
   //-----------------------------------------------------------------------------------------//
    
   mostrar() {
-    let texto = "Nome do Paciente: " + this.nome_paciente + "\n";
-    texto += "Tipo de Fila: " + this.tipo_fila + "\n";
+    texto += "ID Reserva: " + this.id_reserva + "\n";
     texto += "Data: " + this.data+ "\n";
       
     alert(texto);

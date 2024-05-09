@@ -1,5 +1,5 @@
 import ModelError from "/model/ModelError.js";
-import Servico from "/model/Servico.js";
+import Servico from "/model/servico/Servico.js";
 
 export default class ReservaDTO {
     

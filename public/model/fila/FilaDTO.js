@@ -1,5 +1,5 @@
 import ModelError from "/model/ModelError.js";
-import Fila from "/model/Fila.js";
+import Fila from "/model/fila/Fila.js";
 
 export default class FilaDTO {
   //-----------------------------------------------------------------------------------------//
@@ -8,11 +8,13 @@ export default class FilaDTO {
   #tipo_fila;
   #id_fila;
   #tempo_medio;
+  #servico;
 
   constructor(fila) {
     this.#tipo_fila = fila.getTipoFila();
     this.#id_fila = fila.getIdFila();
     this.#tempo_medio = fila.getTempoMedio();
+    this.#servico=fila.getServico()
   }
 
   //-----------------------------------------------------------------------------------------//
@@ -35,12 +37,18 @@ export default class FilaDTO {
 
   //-----------------------------------------------------------------------------------------//
 
-  mostrar() {
-    let texto = "Tipo de Fila: " + this.#tipo_fila + "\n";
-    texto += "Tempo Médio: " + this.#tempo_medio + "\n";
-    texto += "ID da Fila: " + this.#id_fila + "\n";
+  async getServico() {
+    return await this.#servico;
+  }
 
-    alert(texto);
-    alert(JSON.stringify(this));
+  //-----------------------------------------------------------------------------------------//
+
+  toJSON() {
+    return '{ ' +
+      '"Tipo de Fila" : "' + this.#tipo_fila + '",' 
+      '"ID da Fila" : "' + this.#id_fila + '",' 
+      '"Tempo Médio" : "' + this.#tempo_medio + '",' 
+      '"Serviço" : "' + this.#servico.getNomeServico() + '"' 
+      '}';
   }
 }

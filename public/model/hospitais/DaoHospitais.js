@@ -5,8 +5,8 @@ import { getDatabase, ref, query, onValue, onChildAdded, orderByChild,
   from "https://prj-unilasalle-kevin-borba-default-rtdb.firebaseio.com";
 
 
-import Hospital from "/model/Hospital.js";
-import Hospital from "/model/HospitalDTO.js";
+import Hospitais from "/model/hospitais/Hospitais.js";
+import hospitaisDTO from "/model/hospitais/hospitaisDTO.js";
 import ModelError from "/model/ModelError.js";
 
 export default class DaoHospital {
@@ -37,16 +37,16 @@ export default class DaoHospital {
   
   //-----------------------------------------------------------------------------------------//
   
-  async obterFilaPeloId(id_hospital) {
+  async obterHospitalPeloId(id_hospital) {
     let connectionDB = await this.obterConexao();              
     return new Promise((resolve) => {
-      let dbRefHospital = ref(connectionDB,'hospitais/' + hospital);
+      let dbRefHospital = ref(connectionDB,'hospital/' + id_hospital);
       let consulta = query(dbRefHospital);
       let resultPromise = get(consulta);
       resultPromise.then(async (dataSnapshot) => {
         let hospital = dataSnapshot.val();
         if(hospital != null) 
-          resolve(new Fila(hospital.nome,hospital.endereco,hospital.telefone,hospital.id_hospital));
+          resolve(new Hospitais(hospital.nome,hospital.endereco,hospital.telefone,hospital.id_hospital));
         else
           resolve(null);
       });
@@ -55,26 +55,28 @@ export default class DaoHospital {
 
   //-----------------------------------------------------------------------------------------//
 
-  async obterFilas(gerarDTOs) {
+
+  async obterHospitais(gerarDTOs) {
     let connectionDB = await this.obterConexao();      
     
     return new Promise((resolve) => {
-      let conjFilas = [];      
-      let dbRefFilas = ref(connectionDB,'filas');
-      let paramConsulta = orderByChild('id_fila');
-      let consulta = query(dbRefFilas, paramConsulta);
+      let conjHospitais = [];      
+      let dbRefHospitais = ref(connectionDB,'hospitais');
+      let paramConsulta = orderByChild('nome');
+      let consulta = query(dbRefHospitais, paramConsulta);
       let resultPromise = get(consulta);
       resultPromise.then(dataSnapshot => {
-        dataSnapshot.forEach( (dataSnapshotObj) => {
-            let elem = dataSnapshotObj.val();
-            if(gerarDTOs === undefined)
-              conjFilas.push(new Fila(elem.tipo_fila,elem.id_fila,elem.tempo_medio));
-            else
-              conjFilas.push(new FilaDTO(new Fila(elem.tipo_fila,elem.id_fila,elem.tempo_medio)));
-            });
+        dataSnapshot.forEach(dataSnapshotObj => {
+          let elem = dataSnapshotObj.val();
+          if(gerarDTOs === undefined)
+            conjHospitais.push(new Hospitais(elem.nome,elem.endereco,elem.telefone,elem.id_hospital));
+          else
+            conjHospitais.push(new hospitaisDTO(new Hospitais(elem.nome,elem.endereco,elem.telefone,elem.id_hospital)));
         });
+        resolve(conjHospitais);
+      },(e) => console.log("#" + e));
     });
-}
+  }
 
   //-----------------------------------------------------------------------------------------//
 
@@ -84,7 +86,7 @@ export default class DaoHospital {
     let resultado = new Promise( (resolve, reject) => {
       let dbRefHospitais = ref(connectionDB,'hospitais');
       runTransaction(dbRefHospitais, (hospitais) => {       
-        let dbRefNovoHospital = child(dbRefHospitais,hospital.getSigla());
+        let dbRefNovoHospital = child(dbRefHospitais,hospital.getId());
         let setPromise = set(dbRefNovoHospital,hospital);
         setPromise.then( value => {resolve(true)},  erro => {reject(erro)});
       });
@@ -100,7 +102,7 @@ export default class DaoHospital {
     let resultado = new Promise( (resolve, reject) => {   
       let dbRefHospitais = ref(connectionDB,'hospitais');
       runTransaction(dbRefHospitais, (hospitais) => {       
-        let dbRefAlterarHospital = child(dbRefHospitais, hospital.getSigla());
+        let dbRefAlterarHospital = child(dbRefHospitais, hospital.getId());
         let setPromise = set(dbRefAlterarHospital, hospital);
         setPromise.then( value => {resolve(true)},  erro => {reject(erro)});
       });
@@ -116,7 +118,7 @@ export default class DaoHospital {
     let resultado = new Promise( (resolve, reject) => {   
       let dbRefHospital = ref(connectionDB,'hospitais');
       runTransaction(dbRefHospital, (hospitais) => {       
-        let dbRefExcluirHospital = child(dbRefHospital,hospital.getSigla());
+        let dbRefExcluirHospital = child(dbRefHospital,hospital.getId());
         let setPromise = remove(dbRefExcluirHospital, hospital);
         setPromise.then( value => {resolve(true)},  erro => {reject(erro)});
       });

@@ -1,5 +1,5 @@
 import ModelError from "/model/ModelError.js";
-import Reserva from "/model/Reserva.js";
+import Reserva from "/model/reserva/Reserva.js";
 
 export default class ReservaDTO {
     
@@ -7,25 +7,41 @@ export default class ReservaDTO {
 
   // Atributos privados 
   #nome_paciente;
+  #tipo_servico;
   #tipo_fila;
+  #id_reserva;
   #data;
   
   constructor(reserva) {
     this.#nome_paciente = reserva.getNome();
+    this.#tipo_servico = reserva.getTipoServico();
     this.#tipo_fila = reserva.getTipoFila();
+    this.#id_reserva = reserva.getIdReserva();
     this.#data = reserva.getData();           
   }
   
   //-----------------------------------------------------------------------------------------//
 
-  getNomePaciente() {
-    return this.#nome_paciente;
+  async getNomePaciente() {
+    return await this.#nome_paciente;
+  }
+
+  //-----------------------------------------------------------------------------------------//
+
+  async getTipoServico() {
+    return this.#tipo_servico;
   }
   
   //-----------------------------------------------------------------------------------------//
 
-  getTipoFila() {
+  async getTipoFila() {
     return this.#tipo_fila;
+  }
+
+  //-----------------------------------------------------------------------------------------//
+
+  getIdReserva() {
+    return this.#id_reserva;
   }
   
   //-----------------------------------------------------------------------------------------//
@@ -36,12 +52,13 @@ export default class ReservaDTO {
     
   //-----------------------------------------------------------------------------------------//
    
-  mostrar() {
-    let texto = "Nome do Paciente: " + this.#nome_paciente + "\n";
-    texto += "Tipo de Fila: " + this.#tipo_fila + "\n";
-    texto += "Data: " + this.#data +"\n";
-      
-    alert(texto);
-    alert(JSON.stringify(this));
-    }
+  toJSON() {
+    return '{ ' +
+      '"Paciente" : "' + this.#nome_paciente.getNome() + '",' 
+      '"Serviço" : "' + this.#tipo_servico.getIdServico() + '",' 
+      '"Fila" : "' + this.#tipo_fila.getTipoFila() + '",' 
+      '"ID Reserva" : "' + this.#id_reserva + '",' 
+      '"Data" : "' + this.#data + '"' 
+      '}';
+  }
 }
