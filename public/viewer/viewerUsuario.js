@@ -1,13 +1,18 @@
 import Status from "../model/status.js";
-import Paciente from "../model/paciente/pacienteDTO.js";
+import Usuario from "../model/usuario/usuario.js";
 import ViewerError from "../viewer/viewerError.js";
+
 //------------------------------------------------------------------------//
 
-export default class ViewerPaciente {
+export default class ViewerUsuario {
   #ctrl;
 
   constructor(ctrl) {
+    // Guardo a referência para o controlador do viewer
     this.#ctrl = ctrl;
+    // Mapeamos cada 'element' da página que possui um 'id'
+    // como atributo do objeto Viewer. Use o método 'obterElemento'
+    // para guardar a referência 'document.getElementById'
     this.divNavegar = this.obterElemento("divNavegar");
     this.divComandos = this.obterElemento("divComandos");
     this.divAviso = this.obterElemento("divAviso");
@@ -26,11 +31,12 @@ export default class ViewerPaciente {
     this.btOk = this.obterElemento("btOk");
     this.btCancelar = this.obterElemento("btCancelar");
 
-    this.tfCpf = this.obterElemento("tfCpf");
-    this.tfNome = this.obterElemento("tfNome");
     this.tfEmail = this.obterElemento("tfEmail");
-    this.tfTelefone = this.obterElemento("tfTelefone");
+    this.tfUid = this.obterElemento("tfUid");
+    this.cbFuncao = this.obterElemento("cbFuncao");
 
+    // Indico para cada um dos botões, a função a ser
+    // executada no evento 'onclick'
     this.btPrimeiro.onclick = fnBtPrimeiro;
     this.btProximo.onclick = fnBtProximo;
     this.btAnterior.onclick = fnBtAnterior;
@@ -52,6 +58,8 @@ export default class ViewerPaciente {
       throw new ViewerError(
         "Não encontrei um elemento com id '" + idElemento + "'"
       );
+    // Adicionando o atributo 'viewer' no elemento do Viewer. Isso permitirá
+    // que o elemento guarde a referência para o objeto Viewer que o contém.
     elemento.viewer = this;
     return elemento;
   }
@@ -64,22 +72,20 @@ export default class ViewerPaciente {
 
   //------------------------------------------------------------------------//
 
-  apresentar(pos, qtde, paciente) {
+  apresentar(pos, qtde, usuario) {
     this.configurarNavegacao(pos <= 1, pos == qtde);
 
-    if (paciente == null) {
-      this.tfCpf.value = "";
-      this.tfNome.value = "";
+    if (usuario == null) {
       this.tfEmail.value = "";
-      this.tfTelefone.value = "";
-      this.divAviso.innerHTML = " Número de Pacientes: 0";
+      this.tfUid.value = "";
+      this.cbFuncao.value = "INABILITADO";
+      this.divAviso.innerHTML = " Número de Usuarios: 0";
     } else {
-      this.tfCpf.value = paciente.getCPF();
-      this.tfNome.value = paciente.getNome();
-      this.tfEmail.value = paciente.getEmail();
-      this.tfTelefone.value = paciente.getTelefone();
+      this.tfEmail.value = usuario.getEmail();
+      this.tfUid.value = usuario.getUid();
+      this.cbFuncao.value = usuario.getFuncao();
       this.divAviso.innerHTML =
-        "Posição: " + pos + " | Número de Pacientes: " + qtde;
+        "Posição: " + pos + " | Número de Usuarios: " + qtde;
     }
   }
 
@@ -100,29 +106,26 @@ export default class ViewerPaciente {
     this.divDialogo.hidden = false;
 
     if (operacao != Status.EXCLUINDO) {
-      this.tfCpf.disabled = false;
-      this.tfNome.disabled = false;
       this.tfEmail.disabled = false;
-      this.tfTelefone.disabled = false;
+      this.tfUid.disabled = false;
+      this.cbFuncao.disabled = false;
       this.divAviso.innerHTML = "";
     } else {
       this.divAviso.innerHTML = "Deseja excluir este registro?";
     }
     if (operacao == Status.INCLUINDO) {
-      this.tfCpf.value = "";
-      this.tfNome.value = "";
-      this.tfTelefone.value = "";
       this.tfEmail.value = "";
+      this.tfUid.value = "";
+      this.cbFuncao.value = "INABILITADO";
     }
   }
 
   //------------------------------------------------------------------------//
 
   statusApresentacao() {
-    this.tfCpf.disabled = true;
-    this.tfNome.disabled = true;
-    this.tfTelefone.disabled = true;
     this.tfEmail.disabled = true;
+    this.tfUid.disabled = true;
+    this.cbFuncao.disabled = true;
     this.divNavegar.hidden = false;
     this.divComandos.hidden = false;
     this.divDialogo.hidden = true;
@@ -134,62 +137,68 @@ export default class ViewerPaciente {
 //------------------------------------------------------------------------//
 
 function fnBtPrimeiro() {
+  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
+  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().apresentarPrimeiro();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtProximo() {
+  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
+  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().apresentarProximo();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtAnterior() {
+  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
+  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().apresentarAnterior();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtUltimo() {
+  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
+  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().apresentarUltimo();
 }
 //------------------------------------------------------------------------//
 
 function fnBtIncluir() {
+  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
+  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().iniciarIncluir();
-  console.log("entrei aqui");
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtAlterar() {
+  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
+  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().iniciarAlterar();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtExcluir() {
+  // Aqui, o 'this' é o objeto Button. Eu adicionei o atributo 'viewer'
+  // no botão para poder executar a instrução abaixo.
   this.viewer.getCtrl().iniciarExcluir();
 }
 
 //------------------------------------------------------------------------//
 
 function fnBtOk() {
-  const nome = this.viewer.tfNome.value;
   const email = this.viewer.tfEmail.value;
-  const cpf = this.viewer.tfCpf.value;
-  const telefone = this.viewer.tfTelefone.value;
+  const uid = this.viewer.tfUid.value;
+  const funcao = this.viewer.cbFuncao.value;
 
-  this.viewer.getCtrl().efetivar(email, nome, cpf, telefone);
-
-  if (this.viewer.getCtrl().getStatus() == Status.INCLUINDO) {
-    this.viewer.getCtrl().fnEfetivar(email, nome, telefone, cpf);
-  } else if (this.viewer.getCtrl().getStatus() == Status.ALTERANDO) {
-    this.viewer.getCtrl().alterar(email, nome, telefone, cpf);
-  } else if (this.viewer.getCtrl().getStatus() == Status.EXCLUINDO) {
-    this.viewer.getCtrl().excluir(email, nome, telefone, cpf);
-  }
+  // Como defini que o método "efetivar" é um dos métodos incluir, excluir ou alterar
+  // não estou precisando colocar os ninhos de IF abaixo.
+  this.viewer.getCtrl().efetivar(email, uid, funcao);
 }
 
 //------------------------------------------------------------------------//

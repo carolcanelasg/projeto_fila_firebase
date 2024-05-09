@@ -12,7 +12,7 @@
         },
         "reservas": {
           ".read": "root.child('usuarios').child(auth.uid).exists() === true && $uid === auth.uid",
-          ".write": "root.child('usuarios').child(auth.uid).exists() === true" 
+          ".write": "root.child('usuarios').child(auth.uid).exists() === true"
         }
       }
     },
@@ -30,6 +30,14 @@
       ".indexOn": ["id"],
       ".read": "auth != null",
       ".write": "auth != null && root.child('usuarios').child(auth.uid).child('tipo').val() === 'administrador'"
-    }
+    },
+    "sessoes": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid"
+      }
+    },
+    ".read": "auth.token.isAdmin == true || root.child('usuarios').child(auth.uid).child('funcao').val() === 'ADMIN'",
+    ".write": "auth.token.email.contains('@soulasalle.com.br')"
   }
 }

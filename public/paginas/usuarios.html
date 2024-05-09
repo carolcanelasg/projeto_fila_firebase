@@ -2,30 +2,29 @@
 <html lang="pt-br">
   <head>
     <meta charset="utf-8" />
-    <title>Pacientes</title>
+    <title>Usuarios</title>
     <link rel="stylesheet" href="../styles.css" />
     <link rel="manifest" href="../manifest.json" />
   </head>
   <body>
-    <header>Cadastro de Pacientes</header>
+    <header>Cadastro de Usuarios</header>
     <main>
       <div>
-        <label for="tfCpf">CPF:</label
-        ><input type="text" id="tfCpf"  />
+        <label>e-Mail:</label><input type="text" id="tfEmail" disabled="true" />
       </div>
       <div>
-        <label for="tfNome">Nome:</label
-        ><input type="text" id="tfNome"  />
+        <label>UID:</label><input type="text" id="tfUid" disabled="true" />
       </div>
       <div>
-        <label for="tfEmail">e-Mail:</label
-        ><input type="text" id="tfEmail"  />
+        <label>Função:</label
+        ><select id="cbFuncao" disabled="true">
+          <option value="INABILITADO">Inabilitado</option>
+          <option value="ADMIN">Admin</option>
+          <option value="PACIENTE">Paciente</option>
+        </select>
       </div>
-      <div>
-        <label for="tfTelefone">Telefone:</label
-        ><input type="text" id="tfTelefone"  />
-      </div>
-      <div id="divNavegar">
+      <nav>
+        <div id="divNavegar">
           <button id="btPrimeiro">Primeiro</button>
           <button id="btAnterior">Anterior</button>
           <button id="btProximo">Próximo</button>
@@ -35,7 +34,7 @@
           <button id="btIncluir">Incluir</button>
           <button id="btAlterar">Alterar</button>
           <button id="btExcluir">Excluir</button>
-          <button id="btSair" onclick="window.location.href = './init.html'">Sair</button>
+          <button id="btSair" onclick="window.location.href = './init.html'">
         </div>
         <div id="divAviso"></div>
         <div id="divDialogo" hidden>
@@ -45,6 +44,5 @@
       </nav>
     </main>
   </body>
-  
   <script type="module" src="../controller/CtrlSessao.js"></script>
 </html>

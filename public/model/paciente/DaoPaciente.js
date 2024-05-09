@@ -106,7 +106,7 @@ export default class DaoPaciente {
     //--------- PROMISE --------------//
     let resultado = new Promise((resolve, reject) => {
       let dbRefPacientes = ref(connectionDB, "pacientes");
-      runTransaction(dbRefPacientes, (pacientes) => {
+      runTransaction(dbRefPacientes, (paciente) => {
         let dbRefNovoPaciente = child(dbRefPacientes, paciente.getSigla());
         let setPromise = set(dbRefNovoPaciente, paciente);
         setPromise.then(

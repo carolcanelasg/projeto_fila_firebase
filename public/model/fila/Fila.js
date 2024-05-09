@@ -1,4 +1,4 @@
-import ModelError from "/model/ModelError.js";
+import ModelError from "../ModelError.js";
 
 export default class Fila {
   //-----------------------------------------------------------------------------------------//

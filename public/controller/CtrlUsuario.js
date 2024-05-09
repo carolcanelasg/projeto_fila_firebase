@@ -1,36 +1,29 @@
 "use strict";
 
-import Paciente from "../model/paciente/Paciente.js";
-import DaoPaciente from "../model/paciente/DaoPaciente.js";
-import ViewerPaciente from "../viewer/viewerPacientes.js";
 import Status from "../model/status.js";
-import DtoPaciente from "../model/paciente/pacienteDTO.js";
+import Usuario from "../model/usuario/usuario.js";
+import UsuarioDTO from "../model/usuario/usuarioDTO.js";
+import DaoUsuario from "../model/usuario/DaoUsuario.js";
+import ViewerUsuario from "../viewer/viewerUsuario.js";
 
-export default class CtrlPaciente {
+export default class CtrlManterUsuarios {
   //-----------------------------------------------------------------------------------------//
 
   //
   // Atributos do Controlador
   //
-  #daoPaciente; // Referência para o Data Access Object para o Store de pacientes
-  #daoReserva; // Referência para o Data Access Object para o Store de Cursos
-  #viewerPaciente; // Referência para o gerenciador do viewerPaciente
-  #posAtual; // Indica a posição do objeto paciente que estiver sendo apresentado
+  #dao; // Referência para o Data Access Object para o Store de Usuarios
+  #viewer; // Referência para o gerenciador do viewer
+  #posAtual; // Indica a posição do objeto Usuario que estiver sendo apresentado
   #status; // Indica o que o controlador está fazendo
 
   //-----------------------------------------------------------------------------------------//
 
   constructor() {
-    this.#daoPaciente = new DaoPaciente();
-    this.#viewerPaciente = new ViewerPaciente(this);
+    this.#dao = new DaoUsuario();
+    this.#viewer = new ViewerUsuario(this);
     this.#posAtual = 1;
     this.#atualizarContextoNavegacao();
-  }
-
-  //-----------------------------------------------------------------------------------------//
-
-  async obterReservaDTOs() {
-    return await this.#daoReserva.obterReservas(true);
   }
 
   //-----------------------------------------------------------------------------------------//
@@ -39,28 +32,28 @@ export default class CtrlPaciente {
     // Guardo a informação que o controlador está navegando pelos dados
     this.#status = Status.NAVEGANDO;
 
-    // Determina ao viewerPaciente que ele está apresentando dos dados
-    this.#viewerPaciente.statusApresentacao();
+    // Determina ao viewer que ele está apresentando dos dados
+    this.#viewer.statusApresentacao();
 
-    // Solicita ao DAO que dê a lista de todos os pacientes presentes na base
-    let conjpacientes = await this.#daoPaciente.obterPacientes();
+    // Solicita ao DAO que dê a lista de todos os alunos presentes na base
+    let conjUsuarios = await this.#dao.obterUsuarios();
 
-    // Se a lista de pacientes estiver vazia
-    if (conjpacientes.length == 0) {
+    // Se a lista de alunos estiver vazia
+    if (conjUsuarios.length == 0) {
       // Posição Atual igual a zero indica que não há objetos na base
       this.#posAtual = 0;
 
-      // Informo ao viewerPaciente que não deve apresentar nada
-      this.#viewerPaciente.apresentar(0, 0, null);
+      // Informo ao viewer que não deve apresentar nada
+      this.#viewer.apresentar(0, 0, null);
     } else {
       // Se é necessário ajustar a posição atual, determino que ela passa a ser 1
-      if (this.#posAtual == 0 || this.#posAtual > conjpacientes.length)
+      if (this.#posAtual == 0 || this.#posAtual > conjUsuarios.length)
         this.#posAtual = 1;
-      // Peço ao viewerPaciente que apresente o objeto da posição atual
-      this.#viewerPaciente.apresentar(
+      // Peço ao viewer que apresente o objeto da posição atual
+      this.#viewer.apresentar(
         this.#posAtual,
-        conjpacientes.length,
-        new DtoPaciente(conjpacientes[this.#posAtual - 1])
+        conjUsuarios.length,
+        new UsuarioDTO(conjUsuarios[this.#posAtual - 1])
       );
     }
   }
@@ -68,23 +61,23 @@ export default class CtrlPaciente {
   //-----------------------------------------------------------------------------------------//
 
   async apresentarPrimeiro() {
-    let conjpacientes = await this.#daoPaciente.obterPacientes();
-    if (conjpacientes.length > 0) this.#posAtual = 1;
+    let conjUsuarios = await this.#dao.obterUsuarios();
+    if (conjUsuarios.length > 0) this.#posAtual = 1;
     this.#atualizarContextoNavegacao();
   }
 
   //-----------------------------------------------------------------------------------------//
 
   async apresentarProximo() {
-    let conjpacientes = await this.#daoPaciente.obterPacientes();
-    if (this.#posAtual < conjpacientes.length) this.#posAtual++;
+    let conjUsuarios = await this.#dao.obterUsuarios();
+    if (this.#posAtual < conjUsuarios.length) this.#posAtual++;
     this.#atualizarContextoNavegacao();
   }
 
   //-----------------------------------------------------------------------------------------//
 
   async apresentarAnterior() {
-    let conjpacientes = await this.#daoPaciente.obterPacientes();
+    let conjUsuarios = await this.#dao.obterUsuarios();
     if (this.#posAtual > 1) this.#posAtual--;
     this.#atualizarContextoNavegacao();
   }
@@ -92,19 +85,18 @@ export default class CtrlPaciente {
   //-----------------------------------------------------------------------------------------//
 
   async apresentarUltimo() {
-    let conjpacientes = await this.#daoPaciente.obterPacientes();
-    this.#posAtual = conjpacientes.length;
+    let conjUsuarios = await this.#dao.obterUsuarios();
+    this.#posAtual = conjUsuarios.length;
     this.#atualizarContextoNavegacao();
   }
 
   //-----------------------------------------------------------------------------------------//
 
   iniciarIncluir() {
-    console.log("chamei aqui");
     this.#status = Status.INCLUINDO;
-    this.#viewerPaciente.statusEdicao(Status.INCLUINDO);
+    this.#viewer.statusEdicao(Status.INCLUINDO);
     // Guardo a informação que o método de efetivação da operação é o método incluir (ou seja,
-    // a CALLBACK da ação é o método incluir. Preciso disso, pois o viewerPaciente mandará a mensagem
+    // a CALLBACK da ação é o método incluir. Preciso disso, pois o viewer mandará a mensagem
     // "efetivar" (polimórfica) ao invés de "incluir"
     this.efetivar = this.incluir;
   }
@@ -113,9 +105,9 @@ export default class CtrlPaciente {
 
   iniciarAlterar() {
     this.#status = Status.ALTERANDO;
-    this.#viewerPaciente.statusEdicao(Status.ALTERANDO);
+    this.#viewer.statusEdicao(Status.ALTERANDO);
     // Guardo a informação que o método de efetivação da operação é o método alterar (ou seja,
-    // a CALLBACK da ação é o método alterar. Preciso disso, pois o viewerPaciente mandará a mensagem
+    // a CALLBACK da ação é o método alterar. Preciso disso, pois o viewer mandará a mensagem
     // "efetivar" (polimórfica) ao invés de "alterar"
     this.efetivar = this.alterar;
   }
@@ -124,20 +116,20 @@ export default class CtrlPaciente {
 
   iniciarExcluir() {
     this.#status = Status.EXCLUINDO;
-    this.#viewerPaciente.statusEdicao(Status.EXCLUINDO);
+    this.#viewer.statusEdicao(Status.EXCLUINDO);
     // Guardo a informação que o método de efetivação da operação é o método excluir (ou seja,
-    // a CALLBACK da ação é o método excluir. Preciso disso, pois o viewerPaciente mandará a mensagem
+    // a CALLBACK da ação é o método excluir. Preciso disso, pois o viewer mandará a mensagem
     // "efetivar" (polimórfica) ao invés de "excluir"
     this.efetivar = this.excluir;
   }
 
   //-----------------------------------------------------------------------------------------//
 
-  async incluir(cpf, nome, email, telefone) {
+  async incluir(email, uid, funcao) {
     if (this.#status == Status.INCLUINDO) {
       try {
-        let paciente = new Paciente(cpf, nome, email, telefone);
-        await this.#daoPaciente.incluir(paciente);
+        let usuario = new Usuario(email, uid);
+        await this.#dao.incluir(usuario);
         this.#status = Status.NAVEGANDO;
         this.#atualizarContextoNavegacao();
       } catch (e) {
@@ -148,18 +140,17 @@ export default class CtrlPaciente {
 
   //-----------------------------------------------------------------------------------------//
 
-  async alterar(cpf, nome, email, telefone) {
+  async alterar(email, uid, funcao) {
     if (this.#status == Status.ALTERANDO) {
       try {
-        let paciente = await this.#daoPaciente.obterPacientePeloCpf(cpf);
-        if (paciente == null) {
-          alert("paciente com o cpf " + cpf + " não encontrado.");
+        let usuario = await this.#dao.obterUsuarioPeloUID(uid);
+        if (usuario == null) {
+          alert("Usuario com o email " + email + " não encontrado.");
         } else {
-          paciente.setCpf(cpf);
-          paciente.setNome(nome);
-          paciente.setEmail(email);
-          paciente.setTelefone(telefone);
-          await this.#daoPaciente.alterar(paciente);
+          usuario.setEmail(email);
+          usuario.setUid(uid);
+          usuario.setFuncao(funcao);
+          await this.#dao.alterar(usuario);
         }
         this.#status = Status.NAVEGANDO;
         this.#atualizarContextoNavegacao();
@@ -171,14 +162,14 @@ export default class CtrlPaciente {
 
   //-----------------------------------------------------------------------------------------//
 
-  async excluir(cpf) {
+  async excluir(email) {
     if (this.#status == Status.EXCLUINDO) {
       try {
-        let paciente = await this.#daoPaciente.obterPacientePeloCpf(cpf);
-        if (paciente == null) {
-          alert("paciente com a cpf " + cpf + " não encontrado.");
+        let usuario = await this.#dao.obterUsuarioPeloEMail(emai);
+        if (usuario == null) {
+          alert("Usuario com o email " + email + " não encontrado.");
         } else {
-          await this.#daoPaciente.excluir(paciente);
+          await this.#dao.excluir(usuario);
         }
         this.#status = Status.NAVEGANDO;
         this.#atualizarContextoNavegacao();
