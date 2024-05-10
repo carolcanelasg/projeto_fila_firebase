@@ -10,16 +10,12 @@ import Hospital from "/model/HospitalDTO.js";
 import ModelError from "/model/ModelError.js";
 
 export default class DaoHospital {
-  
-  //-----------------------------------------------------------------------------------------//
 
   static promessaConexao = null;
 
   constructor() {
     this.obterConexao();
   }
-
-  //-----------------------------------------------------------------------------------------//
   
   async obterConexao() {
 
@@ -34,8 +30,6 @@ export default class DaoHospital {
     }
     return DaoHospital.promessaConexao;
   }
-  
-  //-----------------------------------------------------------------------------------------//
   
   async obterFilaPeloId(id_hospital) {
     let connectionDB = await this.obterConexao();              
@@ -52,8 +46,6 @@ export default class DaoHospital {
       });
     });
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   async obterFilas(gerarDTOs) {
     let connectionDB = await this.obterConexao();      
@@ -74,13 +66,10 @@ export default class DaoHospital {
             });
         });
     });
-}
-
-  //-----------------------------------------------------------------------------------------//
+  }
 
   async incluir(hospital) {
     let connectionDB = await this.obterConexao();    
-    //--------- PROMISE --------------//
     let resultado = new Promise( (resolve, reject) => {
       let dbRefHospitais = ref(connectionDB,'hospitais');
       runTransaction(dbRefHospitais, (hospitais) => {       
@@ -92,11 +81,8 @@ export default class DaoHospital {
     return resultado;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   async alterar(hospital) {
     let connectionDB = await this.obterConexao();    
-    //--------- PROMISE --------------//
     let resultado = new Promise( (resolve, reject) => {   
       let dbRefHospitais = ref(connectionDB,'hospitais');
       runTransaction(dbRefHospitais, (hospitais) => {       
@@ -107,12 +93,9 @@ export default class DaoHospital {
     });
     return resultado;
   }
-  
-  //-----------------------------------------------------------------------------------------//
 
   async excluir(hospital) {
     let connectionDB = await this.obterConexao();    
-    //--------- PROMISE --------------//
     let resultado = new Promise( (resolve, reject) => {   
       let dbRefHospital = ref(connectionDB,'hospitais');
       runTransaction(dbRefHospital, (hospitais) => {       
@@ -123,5 +106,4 @@ export default class DaoHospital {
     });
     return resultado;
   }
-  //-----------------------------------------------------------------------------------------//
 }

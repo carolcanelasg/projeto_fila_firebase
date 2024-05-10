@@ -2,8 +2,6 @@ import Status from "/model/Status.js";
 import Servico from "/model/servicoDTO.js";
 import ViewerError from "/viewer/ViewerError.js";
 
-//------------------------------------------------------------------------//
-
 export default class ViewerServico {
   #ctrl;
 
@@ -44,8 +42,6 @@ export default class ViewerServico {
     this.btCancelar.onclick = fnBtCancelar;
   }
 
-  //------------------------------------------------------------------------//
-
   obterElemento(idElemento) {
     let elemento = document.getElementById(idElemento);
     if (elemento == null)
@@ -56,13 +52,9 @@ export default class ViewerServico {
     return elemento;
   }
 
-  //------------------------------------------------------------------------//
-
   getCtrl() {
     return this.#ctrl;
   }
-
-  //------------------------------------------------------------------------//
 
   async apresentar(pos, qtde, servico) {
     this.configurarNavegacao(pos <= 1, pos == qtde);
@@ -82,16 +74,12 @@ export default class ViewerServico {
     }
   }
 
-  //------------------------------------------------------------------------//
-
   configurarNavegacao(flagInicio, flagFim) {
     this.btPrimeiro.disabled = flagInicio;
     this.btUltimo.disabled = flagFim;
     this.btProximo.disabled = flagFim;
     this.btAnterior.disabled = flagInicio;
   }
-
-  //------------------------------------------------------------------------//
 
   statusEdicao(operacao) {
     this.divNavegar.hidden = true;
@@ -113,8 +101,6 @@ export default class ViewerServico {
     }
   }
 
-  //------------------------------------------------------------------------//
-
   statusApresentacao() {
     this.tfNomeServico.disabled = true;
     this.divNavegar.hidden = false;
@@ -126,50 +112,32 @@ export default class ViewerServico {
   }
 }
 
-//------------------------------------------------------------------------//
-// CALLBACKs para os Botões
-//------------------------------------------------------------------------//
-
 function fnBtPrimeiro() {
   this.viewer.getCtrl().apresentarPrimeiro();
 }
-
-//------------------------------------------------------------------------//
 
 function fnBtProximo() {
   this.viewer.getCtrl().apresentarProximo();
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtAnterior() {
   this.viewer.getCtrl().apresentarAnterior();
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtUltimo() {
   this.viewer.getCtrl().apresentarUltimo();
 }
-//------------------------------------------------------------------------//
-
 function fnBtIncluir() {
   this.viewer.getCtrl().iniciarIncluir();
 }
-
-//------------------------------------------------------------------------//
 
 function fnBtAlterar() {
   this.viewer.getCtrl().iniciarAlterar();
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtExcluir() {
   this.viewer.getCtrl().iniciarExcluir();
 }
-
-//------------------------------------------------------------------------//
 
 function fnBtOk() {
   const nomeServico = this.viewer.tfNomeServico.value;
@@ -187,10 +155,6 @@ function fnBtOk() {
   }
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtCancelar() {
   this.viewer.getCtrl().cancelar();
 }
-
-//------------------------------------------------------------------------//

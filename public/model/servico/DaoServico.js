@@ -10,16 +10,12 @@ import ServicoDTO from "/model/ServicoDTO.js";
 import ModelError from "/model/ModelError.js";
 
 export default class DaoServico {
-  
-  //-----------------------------------------------------------------------------------------//
 
   static promessaConexao = null;
 
   constructor() {
     this.obterConexao();
   }
-
-  //-----------------------------------------------------------------------------------------//
   
   async obterConexao() {
 
@@ -34,8 +30,6 @@ export default class DaoServico {
     }
     return DaoServico.promessaConexao;
   }
-  
-  //-----------------------------------------------------------------------------------------//
   
   async obterServicoPeloId(id_servico) {
     let connectionDB = await this.obterConexao();              
@@ -53,7 +47,6 @@ export default class DaoServico {
     });
   }
 
-  //-----------------------------------------------------------------------------------------//
 
   async obterServicos(gerarDTOs) {
     let connectionDB = await this.obterConexao();      
@@ -74,9 +67,7 @@ export default class DaoServico {
             });
         });
     });
-}
-
-  //-----------------------------------------------------------------------------------------//
+  }
 
   async incluir(servico) {
     let connectionDB = await this.obterConexao();    
@@ -92,8 +83,6 @@ export default class DaoServico {
     return resultado;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   async alterar(servico) {
     let connectionDB = await this.obterConexao();    
     //--------- PROMISE --------------//
@@ -107,8 +96,6 @@ export default class DaoServico {
     });
     return resultado;
   }
-  
-  //-----------------------------------------------------------------------------------------//
 
   async excluir(servico) {
     let connectionDB = await this.obterConexao();    
@@ -123,5 +110,4 @@ export default class DaoServico {
     });
     return resultado;
   }
-  //-----------------------------------------------------------------------------------------//
 }

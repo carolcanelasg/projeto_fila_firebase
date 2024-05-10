@@ -2,8 +2,6 @@ import Status from "/model/Status.js";
 import Reserva from "/model/Reserva.js";
 import ViewerError from "/viewer/ViewerError.js";
 
-//------------------------------------------------------------------------//
-
 export default class ViewerReserva {
   #ctrl;
 
@@ -46,9 +44,7 @@ export default class ViewerReserva {
     this.btOk.onclick = fnBtOk;
     this.btCancelar.onclick = fnBtCancelar;
   }
-
-  //------------------------------------------------------------------------//
-
+  
   obterElemento(idElemento) {
     let elemento = document.getElementById(idElemento);
     if (elemento == null)
@@ -59,13 +55,9 @@ export default class ViewerReserva {
     return elemento;
   }
 
-  //------------------------------------------------------------------------//
-
   getCtrl() {
     return this.#ctrl;
   }
-
-  //------------------------------------------------------------------------//
 
   async #opcoesPacientes(tfNomePaciente) {
     while (this.tfNomePaciente.length > 0) {
@@ -151,16 +143,12 @@ export default class ViewerReserva {
     }
   }
 
-  //------------------------------------------------------------------------//
-
   configurarNavegacao(flagInicio, flagFim) {
     this.btPrimeiro.disabled = flagInicio;
     this.btUltimo.disabled = flagFim;
     this.btProximo.disabled = flagFim;
     this.btAnterior.disabled = flagInicio;
   }
-
-  //------------------------------------------------------------------------//
 
   statusEdicao(operacao) {
     this.divNavegar.hidden = true;
@@ -188,8 +176,6 @@ export default class ViewerReserva {
     }
   }
 
-  //------------------------------------------------------------------------//
-
   statusApresentacao() {
     this.tfNomePaciente.disabled = true;
     this.divNavegar.hidden = false;
@@ -204,50 +190,33 @@ export default class ViewerReserva {
   }
 }
 
-//------------------------------------------------------------------------//
-// CALLBACKs para os Botões
-//------------------------------------------------------------------------//
-
 function fnBtPrimeiro() {
   this.viewer.getCtrl().apresentarPrimeiro();
 }
-
-//------------------------------------------------------------------------//
 
 function fnBtProximo() {
   this.viewer.getCtrl().apresentarProximo();
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtAnterior() {
   this.viewer.getCtrl().apresentarAnterior();
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtUltimo() {
   this.viewer.getCtrl().apresentarUltimo();
 }
-//------------------------------------------------------------------------//
 
 function fnBtIncluir() {
   this.viewer.getCtrl().iniciarIncluir();
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtAlterar() {
   this.viewer.getCtrl().iniciarAlterar();
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtExcluir() {
   this.viewer.getCtrl().iniciarExcluir();
 }
-
-//------------------------------------------------------------------------//
 
 function fnBtOk() {
   const nomePaciente = this.viewer.tfNomePaciente.value;
@@ -303,10 +272,6 @@ function fnBtOk() {
   }
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtCancelar() {
   this.viewer.getCtrl().cancelar();
 }
-
-//------------------------------------------------------------------------//

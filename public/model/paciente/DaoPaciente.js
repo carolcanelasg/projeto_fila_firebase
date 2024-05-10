@@ -22,15 +22,12 @@ import PacienteDTO from "../paciente/pacienteDTO.js";
 import ModelError from "../ModelError.js";
 
 export default class DaoPaciente {
-  //-----------------------------------------------------------------------------------------//
 
   static promessaConexao = null;
 
   constructor() {
     this.obterConexao();
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   async obterConexao() {
     if (DaoPaciente.promessaConexao == null) {
@@ -45,8 +42,6 @@ export default class DaoPaciente {
     }
     return DaoPaciente.promessaConexao;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   async obterPacientePeloCpf(cpf) {
     let connectionDB = await this.obterConexao();
@@ -69,8 +64,6 @@ export default class DaoPaciente {
       });
     });
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   async obterPacientes(gerarDTOs) {
     let connectionDB = await this.obterConexao();
@@ -99,11 +92,8 @@ export default class DaoPaciente {
     });
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   async incluir(paciente) {
     let connectionDB = await this.obterConexao();
-    //--------- PROMISE --------------//
     let resultado = new Promise((resolve, reject) => {
       let dbRefPacientes = ref(connectionDB, "pacientes");
       runTransaction(dbRefPacientes, (paciente) => {
@@ -122,11 +112,8 @@ export default class DaoPaciente {
     return resultado;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   async alterar(paciente) {
     let connectionDB = await this.obterConexao();
-    //--------- PROMISE --------------//
     let resultado = new Promise((resolve, reject) => {
       let dbRefPacientes = ref(connectionDB, "pacientes");
       runTransaction(dbRefCursos, (pacientes) => {
@@ -145,11 +132,8 @@ export default class DaoPaciente {
     return resultado;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   async excluir(paciente) {
     let connectionDB = await this.obterConexao();
-    //--------- PROMISE --------------//
     let resultado = new Promise((resolve, reject) => {
       let dbRefPaciente = ref(connectionDB, "pacientes");
       runTransaction(dbRefPaciente, (pacientes) => {
@@ -167,5 +151,4 @@ export default class DaoPaciente {
     });
     return resultado;
   }
-  //-----------------------------------------------------------------------------------------//
 }

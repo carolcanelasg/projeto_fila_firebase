@@ -10,16 +10,12 @@ import ReservaDTO from "/model/ReservaDTO.js";
 import ModelError from "/model/ModelError.js";
 
 export default class DaoReserva {
-  
-  //-----------------------------------------------------------------------------------------//
 
   static promessaConexao = null;
 
   constructor() {
     this.obterConexao();
   }
-
-  //-----------------------------------------------------------------------------------------//
   
   async obterConexao() {
 
@@ -34,8 +30,6 @@ export default class DaoReserva {
     }
     return DaoReserva.promessaConexao;
   }
-  
-  //-----------------------------------------------------------------------------------------//
   
   async obterReservaPelaData(data) {
     let connectionDB = await this.obterConexao();              
@@ -52,8 +46,6 @@ export default class DaoReserva {
       });
     });
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   async obterReservas(gerarDTOs) {
     let connectionDB = await this.obterConexao();      
@@ -74,9 +66,7 @@ export default class DaoReserva {
             });
         });
     });
-}
-
-  //-----------------------------------------------------------------------------------------//
+  }
 
   async incluir(reserva) {
     let connectionDB = await this.obterConexao();    
@@ -92,8 +82,6 @@ export default class DaoReserva {
     return resultado;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   async alterar(reserva) {
     let connectionDB = await this.obterConexao();    
     //--------- PROMISE --------------//
@@ -108,8 +96,6 @@ export default class DaoReserva {
     return resultado;
   }
   
-  //-----------------------------------------------------------------------------------------//
-
   async excluir(reserva) {
     let connectionDB = await this.obterConexao();    
     //--------- PROMISE --------------//
@@ -123,5 +109,4 @@ export default class DaoReserva {
     });
     return resultado;
   }
-  //-----------------------------------------------------------------------------------------//
 }

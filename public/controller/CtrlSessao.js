@@ -48,12 +48,9 @@ const app = initializeApp(firebaseConfig);
 export default class CtrlSessao {
   #daoUsuario;
 
-  //-----------------------------------------------------------------------------------------//
   constructor() {
     this.init();
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   async init() {
     console.log("Inferno : ");
@@ -78,8 +75,6 @@ export default class CtrlSessao {
       alert(e);
     }
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   async verificandoLogin() {
     return new Promise((resolve, reject) => {
@@ -114,7 +109,4 @@ export default class CtrlSessao {
   }
 }
 
-//------------------------------------------------------------------------//
-
-//var ctrlUC = document.currentScript.getAttribute('ctrl');
 new CtrlSessao();

@@ -2,7 +2,6 @@ import ModelError from "../ModelError.js";
 import Paciente from "../paciente/Paciente.js";
 
 export default class PacienteDTO {
-  //-----------------------------------------------------------------------------------------//
 
   // Atributos privados
   #cpf;
@@ -17,31 +16,21 @@ export default class PacienteDTO {
     this.#telefone = paciente.getTelefone();
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getCpf() {
     return this.#cpf;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   getNome() {
     return this.#nome;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getEmail() {
     return this.#email;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getTelefone() {
     return this.#telefone;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   mostrar() {
     let texto = "CPF: " + this.#cpf + "\n";

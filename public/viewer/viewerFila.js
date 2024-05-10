@@ -2,8 +2,6 @@ import Status from "/model/Status.js";
 import Fila from "/model/fila/filaDTO.js";
 import ViewerError from "/viewer/ViewerError.js";
 
-//------------------------------------------------------------------------//
-
 export default class ViewerFila {
   #ctrl;
 
@@ -45,8 +43,6 @@ export default class ViewerFila {
     this.btCancelar.onclick = fnBtCancelar;
   }
 
-  //------------------------------------------------------------------------//
-
   obterElemento(idElemento) {
     let elemento = document.getElementById(idElemento);
     if (elemento == null)
@@ -57,13 +53,10 @@ export default class ViewerFila {
     return elemento;
   }
 
-  //------------------------------------------------------------------------//
-
   getCtrl() {
     return this.#ctrl;
   }
 
-  //------------------------------------------------------------------------//
   async #opcoesServico(servicoDaFila) {
     while (this.opcoesServico.length > 0) {
       this.opcoesServico.remove(0);
@@ -101,16 +94,12 @@ export default class ViewerFila {
     }
   }
 
-  //------------------------------------------------------------------------//
-
   configurarNavegacao(flagInicio, flagFim) {
     this.btPrimeiro.disabled = flagInicio;
     this.btUltimo.disabled = flagFim;
     this.btProximo.disabled = flagFim;
     this.btAnterior.disabled = flagInicio;
   }
-
-  //------------------------------------------------------------------------//
 
   statusEdicao(operacao) {
     this.divNavegar.hidden = true;
@@ -135,8 +124,6 @@ export default class ViewerFila {
     }
   }
 
-  //------------------------------------------------------------------------//
-
   statusApresentacao() {
     this.tfTipoFila.disabled = true;
     this.divNavegar.hidden = false;
@@ -149,50 +136,34 @@ export default class ViewerFila {
   }
 }
 
-//------------------------------------------------------------------------//
-// CALLBACKs para os Botões
-//------------------------------------------------------------------------//
 
 function fnBtPrimeiro() {
   this.viewer.getCtrl().apresentarPrimeiro();
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtProximo() {
   this.viewer.getCtrl().apresentarProximo();
 }
-
-//------------------------------------------------------------------------//
 
 function fnBtAnterior() {
   this.viewer.getCtrl().apresentarAnterior();
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtUltimo() {
   this.viewer.getCtrl().apresentarUltimo();
 }
-//------------------------------------------------------------------------//
 
 function fnBtIncluir() {
   this.viewer.getCtrl().iniciarIncluir();
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtAlterar() {
   this.viewer.getCtrl().iniciarAlterar();
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtExcluir() {
   this.viewer.getCtrl().iniciarExcluir();
 }
-
-//------------------------------------------------------------------------//
 
 function fnBtOk() {
   const tipoFila = this.viewer.tfTipoFila.value;
@@ -213,10 +184,6 @@ function fnBtOk() {
   }
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtCancelar() {
   this.viewer.getCtrl().cancelar();
 }
-
-//------------------------------------------------------------------------//

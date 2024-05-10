@@ -1,7 +1,6 @@
 import ModelError from "../ModelError.js";
 
 export default class Paciente {
-  //-----------------------------------------------------------------------------------------//
 
   constructor(cpf, nome, email, telefone) {
     this.setCpf(cpf);
@@ -10,26 +9,18 @@ export default class Paciente {
     this.setTelefone(telefone);
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getCpf() {
     return this.cpf;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   setCpf(cpf) {
     if (!Paciente.validarCpf(cpf)) throw new ModelError("CPF Inválido: " + cpf);
     this.cpf = cpf;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getNome() {
     return this.nome;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   setNome(nome) {
     if (!Paciente.validarNome(nome))
@@ -37,13 +28,9 @@ export default class Paciente {
     this.nome = nome;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getEmail() {
     return this.email;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   setEmail(email) {
     if (!Paciente.validarEmail(email))
@@ -51,21 +38,15 @@ export default class Paciente {
     this.email = email;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getTelefone() {
     return this.telefone;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   setTelefone(telefone) {
     if (!Paciente.validarTelefone(telefone))
       throw new ModelError("Telefone inválido: " + telefone);
     this.telefone = telefone;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   static validarCpf(strCpf) {
     let soma;
@@ -96,7 +77,6 @@ export default class Paciente {
     return true;
   }
 
-  //-----------------------------------------------------------------------------------------//
 
   static validarNome(nome) {
     if (nome == null || nome == "" || nome == undefined) return false;
@@ -106,8 +86,6 @@ export default class Paciente {
     return true;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   static validarEmail(email) {
     if (email == null || email == "" || email == undefined) return false;
 
@@ -115,8 +93,6 @@ export default class Paciente {
     if (!padraoEmail.test(email)) return false;
     return true;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   static validarTelefone(telefone) {
     if (telefone == null || telefone == "" || telefone == undefined)
@@ -127,8 +103,6 @@ export default class Paciente {
     if (!padraoTelefone.test(telefone)) return false;
     return true;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   mostrar() {
     let texto = "CPF: " + this.cpf + "\n";

@@ -118,50 +118,33 @@ export default class ViewerHospital {
   }
 }
 
-//------------------------------------------------------------------------//
-// CALLBACKs para os Botões
-//------------------------------------------------------------------------//
-
 function fnBtPrimeiro() {
   this.viewer.getCtrl().apresentarPrimeiro();
 }
-
-//------------------------------------------------------------------------//
 
 function fnBtProximo() {
   this.viewer.getCtrl().apresentarProximo();
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtAnterior() {
   this.viewer.getCtrl().apresentarAnterior();
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtUltimo() {
   this.viewer.getCtrl().apresentarUltimo();
 }
-//------------------------------------------------------------------------//
 
 function fnBtIncluir() {
   this.viewer.getCtrl().iniciarIncluir();
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtAlterar() {
   this.viewer.getCtrl().iniciarAlterar();
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtExcluir() {
   this.viewer.getCtrl().iniciarExcluir();
 }
-
-//------------------------------------------------------------------------//
 
 function fnBtOk() {
   const endereco = this.viewer.tfEndereco.value;
@@ -180,10 +163,6 @@ function fnBtOk() {
   }
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtCancelar() {
   this.viewer.getCtrl().cancelar();
 }
-
-//------------------------------------------------------------------------//

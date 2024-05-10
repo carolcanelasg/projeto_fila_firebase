@@ -2,8 +2,6 @@ import ModelError from "/model/ModelError.js";
 import Servico from "/model/Servico.js";
 
 export default class ReservaDTO {
-    
-  //-----------------------------------------------------------------------------------------//
 
   // Atributos privados 
   #nome_servico;
@@ -15,26 +13,18 @@ export default class ReservaDTO {
     this.#quantidade_atendimento = reserva.getQuantidadeAtendimento();
     this.#id_servico = reserva.getIdServico();
   }
-  
-  //-----------------------------------------------------------------------------------------//
 
   getNomeServico() {
     return this.#nome_servico;
   }
-  
-  //-----------------------------------------------------------------------------------------//
 
   getQuantidadeAtendimento() {
     return this.#quantidade_atendimento;
   }
-  
-  //-----------------------------------------------------------------------------------------//
 
   getIdServico() {
     return this.#id_servico;
-  }
-    
-  //-----------------------------------------------------------------------------------------//
+  } 
    
   mostrar() {
     let texto = "Nome do Serviço: " + this.#nome_servico + "\n";

@@ -2,7 +2,6 @@ import ModelError from "../ModelError";
 import Hospitais from "/model/hospitais/Hospitais";
 
 export default class HospitalDTO {
-  //-----------------------------------------------------------------------------------------//
 
   // Atributos privados
   #id_hospital;
@@ -17,31 +16,21 @@ export default class HospitalDTO {
     this.#telefone = hospital.getTelefone();
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getIdHospital() {
     return this.#id_hospital;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   getNome() {
     return this.#nome;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getEndereco() {
     return this.#endereco;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getTelefone() {
     return this.#telefone;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   mostrar() {
     let texto = "Nome: " + this.#nome + "\n";

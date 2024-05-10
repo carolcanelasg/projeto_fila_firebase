@@ -1,7 +1,6 @@
 import ModelError from "../ModelError.js";
 
 export default class Reserva {
-  //-----------------------------------------------------------------------------------------//
 
   constructor(nome_paciente, tipo_fila, data) {
     this.setNomePaciente(nome_paciente);
@@ -9,13 +8,9 @@ export default class Reserva {
     this.setData(data);
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getNomePaciente() {
     return this.nome_paciente;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   setNomePaciente(nome) {
     if (!Reserva.validarNome(nome))
@@ -23,13 +18,9 @@ export default class Reserva {
     this.nome_paciente = nome;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getTipoFila() {
     return this.tipo_fila;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   setTipoFila(tipoFila) {
     if (!Reserva.validarTipoFila(tipoFila))
@@ -37,21 +28,15 @@ export default class Reserva {
     this.tipo_fila = tipoFila;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getData() {
     return this.data;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   setData(data) {
     if (!Reserva.validarData(data))
       throw new ModelError("Data inválida: " + data);
     this.data = data;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   static validarNome(nome) {
     if (nome == null || nome == "" || nome == undefined) return false;
@@ -60,8 +45,6 @@ export default class Reserva {
     if (!padraoNome.test(nome)) return false;
     return true;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   static validarTipoFila(tipoFila) {
     if (tipoFila == null || tipoFila == "" || tipoFila == undefined)
@@ -72,14 +55,10 @@ export default class Reserva {
     return true;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   static validarData(data) {
     if (data == null || data == "" || data == undefined) return false;
     return true;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   mostrar() {
     let texto = "Nome do Paciente: " + this.nome_paciente + "\n";

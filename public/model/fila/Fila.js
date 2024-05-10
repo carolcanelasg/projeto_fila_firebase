@@ -1,7 +1,6 @@
 import ModelError from "../ModelError.js";
 
 export default class Fila {
-  //-----------------------------------------------------------------------------------------//
 
   constructor(tipo_fila, id_fila, tempo_medio, servico) {
     this.setTipoFila(tipo_fila);
@@ -10,13 +9,9 @@ export default class Fila {
     this.setServicoFila(servico);
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getTipoFila() {
     return this.tipo_fila;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   setTipoFila(tipoFila) {
     if (!Fila.validarTipoFila(tipoFila))
@@ -24,26 +19,18 @@ export default class Fila {
     this.tipo_fila = tipoFila;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getId() {
     return this.id;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   setId(id) {
     if (!Fila.validarId(id)) throw new ModelError("ID Inválido: " + id);
     this.id_fila = id;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getTempoMedio() {
     return this.tempo_medio;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   setTempoMedio(tempoMedio) {
     if (!Fila.validarTempo(tempoMedio))
@@ -51,21 +38,15 @@ export default class Fila {
     this.tempo_medio = tempoMedio;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getServicoFila() {
     return this.servico;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   setServicoFila(servico) {
     if (!Fila.validarServicoFila(servico))
       throw new ModelError("Serviço inválido: " + servico);
     this.servico = servico;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   static validarServicoFila(servico) {
     if (servico == null || servico == "" || servico == undefined) return false;
@@ -74,8 +55,6 @@ export default class Fila {
     if (!padraoServicoFila.test(servico)) return false;
     return true;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   static validarTipoFila(tipoFila) {
     if (tipoFila == null || tipoFila == "" || tipoFila == undefined)
@@ -86,15 +65,11 @@ export default class Fila {
     return true;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   static validarTempo(tempoMedio) {
     if (tempoMedio == null || tempoMedio == "" || tempoMedio == undefined)
       return false;
     return true;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   static validarId(idFila) {
     if (idFila == null || idFila == "" || idFila == undefined) return false;
@@ -102,8 +77,6 @@ export default class Fila {
     if (!padraoID.test(idFila)) return false;
     return true;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   mostrar() {
     let texto = "Tipo de fila: " + this.tipo_fila + "\n";

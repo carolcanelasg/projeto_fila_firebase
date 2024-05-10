@@ -1,7 +1,6 @@
 import Status from "../model/status.js";
 import Paciente from "../model/paciente/pacienteDTO.js";
 import ViewerError from "../viewer/viewerError.js";
-//------------------------------------------------------------------------//
 
 export default class ViewerPaciente {
   #ctrl;
@@ -44,8 +43,6 @@ export default class ViewerPaciente {
     this.btCancelar.onclick = fnBtCancelar;
   }
 
-  //------------------------------------------------------------------------//
-
   obterElemento(idElemento) {
     let elemento = document.getElementById(idElemento);
     if (elemento == null)
@@ -55,15 +52,11 @@ export default class ViewerPaciente {
     elemento.viewer = this;
     return elemento;
   }
-
-  //------------------------------------------------------------------------//
-
+  
   getCtrl() {
     return this.#ctrl;
   }
-
-  //------------------------------------------------------------------------//
-
+  
   apresentar(pos, qtde, paciente) {
     this.configurarNavegacao(pos <= 1, pos == qtde);
 
@@ -82,18 +75,14 @@ export default class ViewerPaciente {
         "Posição: " + pos + " | Número de Pacientes: " + qtde;
     }
   }
-
-  //------------------------------------------------------------------------//
-
+  
   configurarNavegacao(flagInicio, flagFim) {
     this.btPrimeiro.disabled = flagInicio;
     this.btUltimo.disabled = flagFim;
     this.btProximo.disabled = flagFim;
     this.btAnterior.disabled = flagInicio;
   }
-
-  //------------------------------------------------------------------------//
-
+  
   statusEdicao(operacao) {
     this.divNavegar.hidden = true;
     this.divComandos.hidden = true;
@@ -115,9 +104,7 @@ export default class ViewerPaciente {
       this.tfEmail.value = "";
     }
   }
-
-  //------------------------------------------------------------------------//
-
+  
   statusApresentacao() {
     this.tfCpf.disabled = true;
     this.tfNome.disabled = true;
@@ -129,51 +116,34 @@ export default class ViewerPaciente {
   }
 }
 
-//------------------------------------------------------------------------//
-// CALLBACKs para os Botões
-//------------------------------------------------------------------------//
-
 function fnBtPrimeiro() {
   this.viewer.getCtrl().apresentarPrimeiro();
 }
-
-//------------------------------------------------------------------------//
 
 function fnBtProximo() {
   this.viewer.getCtrl().apresentarProximo();
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtAnterior() {
   this.viewer.getCtrl().apresentarAnterior();
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtUltimo() {
   this.viewer.getCtrl().apresentarUltimo();
 }
-//------------------------------------------------------------------------//
 
 function fnBtIncluir() {
   this.viewer.getCtrl().iniciarIncluir();
   console.log("entrei aqui");
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtAlterar() {
   this.viewer.getCtrl().iniciarAlterar();
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtExcluir() {
   this.viewer.getCtrl().iniciarExcluir();
 }
-
-//------------------------------------------------------------------------//
 
 function fnBtOk() {
   const nome = this.viewer.tfNome.value;
@@ -192,10 +162,6 @@ function fnBtOk() {
   }
 }
 
-//------------------------------------------------------------------------//
-
 function fnBtCancelar() {
   this.viewer.getCtrl().cancelar();
 }
-
-//------------------------------------------------------------------------//

@@ -10,16 +10,12 @@ import Fila from "/model/FilaDTO.js";
 import ModelError from "/model/ModelError.js";
 
 export default class DaoFila {
-  
-  //-----------------------------------------------------------------------------------------//
 
   static promessaConexao = null;
 
   constructor() {
     this.obterConexao();
   }
-
-  //-----------------------------------------------------------------------------------------//
   
   async obterConexao() {
 
@@ -34,8 +30,6 @@ export default class DaoFila {
     }
     return DaoFila.promessaConexao;
   }
-  
-  //-----------------------------------------------------------------------------------------//
   
   async obterFilaPeloId(id_fila) {
     let connectionDB = await this.obterConexao();              
@@ -52,8 +46,6 @@ export default class DaoFila {
       });
     });
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   async obterFilas(gerarDTOs) {
     let connectionDB = await this.obterConexao();      
@@ -76,11 +68,8 @@ export default class DaoFila {
     });
 }
 
-  //-----------------------------------------------------------------------------------------//
-
   async incluir(fila) {
     let connectionDB = await this.obterConexao();    
-    //--------- PROMISE --------------//
     let resultado = new Promise( (resolve, reject) => {
       let dbRefFilas = ref(connectionDB,'filas');
       runTransaction(dbRefFilas, (filas) => {       
@@ -92,11 +81,8 @@ export default class DaoFila {
     return resultado;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   async alterar(fila) {
     let connectionDB = await this.obterConexao();    
-    //--------- PROMISE --------------//
     let resultado = new Promise( (resolve, reject) => {   
       let dbRefFilas = ref(connectionDB,'filas');
       runTransaction(dbRefCursos, (filas) => {       
@@ -107,12 +93,9 @@ export default class DaoFila {
     });
     return resultado;
   }
-  
-  //-----------------------------------------------------------------------------------------//
 
   async excluir(fila) {
     let connectionDB = await this.obterConexao();    
-    //--------- PROMISE --------------//
     let resultado = new Promise( (resolve, reject) => {   
       let dbRefFila = ref(connectionDB,'filas');
       runTransaction(dbRefFila, (filas) => {       
@@ -123,5 +106,4 @@ export default class DaoFila {
     });
     return resultado;
   }
-  //-----------------------------------------------------------------------------------------//
 }

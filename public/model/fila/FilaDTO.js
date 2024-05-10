@@ -2,7 +2,6 @@ import ModelError from "/model/ModelError.js";
 import Fila from "/model/Fila.js";
 
 export default class FilaDTO {
-  //-----------------------------------------------------------------------------------------//
 
   // Atributos privados
   #tipo_fila;
@@ -15,25 +14,17 @@ export default class FilaDTO {
     this.#tempo_medio = fila.getTempoMedio();
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getTipoFila() {
     return this.#tipo_fila;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   getIdFila() {
     return this.#id_fila;
   }
 
-  //-----------------------------------------------------------------------------------------//
-
   getTempoMedio() {
     return this.#tempo_medio;
   }
-
-  //-----------------------------------------------------------------------------------------//
 
   mostrar() {
     let texto = "Tipo de Fila: " + this.#tipo_fila + "\n";
